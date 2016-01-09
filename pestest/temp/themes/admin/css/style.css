@@ -1,0 +1,31 @@
+/* CSS Document */
+
+.loading {
+    background: white;
+    padding: 20px;
+    border: 2px solid green;
+    display: none; /* hidden */
+    position: absolute;    
+    left: 50%;
+    margin-left: -100px;
+    top: 25%;
+    width: 200px;
+    /*height: 100px;*/
+	/*margin-top: -50;*/
+    font-weight: bold;
+    font-size: large;
+}
+.hr1{
+border-style:solid;
+border-width:1px;
+border-color:#FF9900
+}
+
+.btn_1{
+
+   background-image:url(../images/bg_button.jpg);
+   font-family:Arial;
+   width:116px;
+   height:26px;
+   border:none;
+}

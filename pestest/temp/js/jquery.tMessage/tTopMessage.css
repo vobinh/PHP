@@ -1,0 +1,79 @@
+/* 
+    Document   : tTopMessage
+    Created on : Dec 28, 2011, 11:42:16 AM
+    Author     : MrStorm
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+/*********************** tTopMessage *************************/
+
+.tTopMessage-parent {
+    width:100%;
+    height: 100px;
+    position:fixed;
+    top:0px;
+    z-index:100000;
+    text-align:center;
+    display: none;
+}
+
+.tTopMessage-parent .tTopMessage-child {
+    text-transform:capitalize;
+    box-shadow: 0px 5px 5px #666;
+    -moz-box-shadow: 0px 5px 5px #666;
+    -webkit-box-shadow: 0px 5px 5px #666;
+    font-weight:bold;
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:10px;
+    padding:0px 20px;
+    width:auto;
+    min-height:30px;
+    line-height:30px;
+    font-size:12px;
+    display:inline-block;
+}
+
+.tTopMessage-loading span {background:url('images/icon_loading.gif') no-repeat;}
+.tTopMessage-error span {background:url('images/icon_error.png') no-repeat;}
+.tTopMessage-success span {background:url('images/icon_success.png') no-repeat;}
+.tTopMessage-warning span {background:url('images/icon_warning.png') no-repeat;}
+.tTopMessage-info span {background:url('images/icon_info.png') no-repeat;}
+.tTopMessage-parent .tTopMessage-child span {padding-left: 20px;}
+
+.tTopMessage-loading { 
+    background:-webkit-gradient(linear, left top, left 25, from(#02669A), color-stop(4%, #2AB5FD), to(#02669A));
+    background:-moz-linear-gradient(top, #2AB5FD, #02669A 1px, #2AB5FD 25px);
+    color:#FFF;
+}
+
+.tTopMessage-success { 
+    background:-webkit-gradient(linear, left top, left 25, from(#61B832), color-stop(4%, #55A12C), to(#61B832));
+    background:-moz-linear-gradient(top, #55A12C, #61B832 1px, #55A12C 25px);
+    color:#FFF;
+}
+
+.tTopMessage-info { 
+    background:-webkit-gradient(linear, left top, left 25, from(#4EA5CD), color-stop(4%, #3B8EB5), to(#4EA5CD));
+    background:-moz-linear-gradient(top, #3B8EB5, #4EA5CD 1px, #3B8EB5 25px);
+    color:#FFF;
+}
+
+.tTopMessage-warning { 
+    background:-webkit-gradient(linear, left top, left 25, from(#eaaf51), color-stop(4%, #d99a36), to(#eaaf51));
+    background:-moz-linear-gradient(top, #d99a36, #eaaf51 1px, #d99a36 25px);
+    color:#FFF;
+}
+
+
+.tTopMessage-error { 
+    background:-webkit-gradient(linear, left top, left 25, from(#DE4343), color-stop(4%, #C43D3D), to(#DE4343));
+    background:-moz-linear-gradient(top, #C43D3D, #DE4343 1px, #C43D3D 25px);
+    color:#FFF;
+}
+

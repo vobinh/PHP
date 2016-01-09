@@ -1,0 +1,127 @@
+/* CSS Document */
+
+.text_error{
+ font-family:Arial;
+ font-size:12px;
+ color:#FF0000;
+}
+.blue_alert {
+ font-family:Arial;
+ font-size: 12px;
+ background-color: #f9f9f9;
+ border: 1px solid #D0D0D0;
+ color: #002166;
+
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+.red_alert {
+ font-family:Arial;
+ font-size: 12px;
+ background-color: #FBE6F2;
+ border: 1px solid #D893A1;
+ color: #D893A1;
+
+ margin: 14px 0 14px 0;
+ padding: 12px 10px 12px 10px;
+}
+
+.text_tbl_list{
+	font-family:Arial;
+	font-size:12px;
+	color:#000000;
+}
+
+.text_hd1{
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	color:#FF9900;
+}
+
+.text_1{
+	font-family:Arial;
+	font-size:12px;
+	color:#FF9900;
+}
+
+.text_nomal{
+	font-family:Arial;
+	font-size:12px;
+	color:#482400;
+}
+.text_price{
+	font-family:Arial;
+	font-size:14px;
+	font-weight:bold;
+	color:#FF0000;
+}
+
+.text_menu_footer{
+	font-family:Arial;
+	font-size:12px;
+	color:#D6D6D6;
+}
+
+
+/* link */
+
+a.lnk_nomal:active  
+{	
+    text-decoration: none;
+	
+}
+a.lnk_nomal:link  
+{	
+	text-decoration: none;
+}
+a.lnk_nomal:visited   
+{ 	
+	text-decoration: none;	
+}
+
+a.lnk_nomal:hover 
+{ 	
+	text-decoration: none;			
+}
+
+
+/* link bold */
+
+
+a.lnk_bold_2:active  
+{	
+	font-size: 10pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	color: #5c7c00;
+	text-decoration: none;
+	
+}
+a.lnk_bold_2:link  
+{	
+	font-size: 10pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	color: #5c7c00;
+	text-decoration: none;
+}
+a.lnk_bold_2:visited   
+{ 	
+	font-size: 10pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:normal;
+	color: #5c7c00;
+	text-decoration: none;	
+}
+
+a.lnk_bold_2:hover 
+{ 	
+	font-size: 10pt;
+	font-family:Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	color: #5c7c00;
+	text-decoration: none;
+
+}
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Amazon S3 File Manager for TinyMCE &amp; CKEditor</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+	<link type="text/css" href="lib/dynatree/skin/ui.dynatree.css" rel="stylesheet" />
+	<link type="text/css" href="skin/dark/dark.css" rel="stylesheet" />
+
+	<script type="text/javascript" src="lib/jquery-1.4.2.min.js"></script>
+
+	<script type="text/javascript" src="lib/jquery-ui.js"></script>
+
+	<script type="text/javascript" src="lib/AmazonS3FileManager.js"></script>
+
+	<script type="text/javascript" src="lib/dynatree/jquery.dynatree.min.js"></script>
+
+	<script type="text/javascript" src="imageuploader/iuembed.js"></script>
+
+	<script type="text/javascript" src="imageuploader/iuembed.AmazonS3.js"></script>
+
+	<script type="text/javascript" src="imageuploader/s3filemanager.js"></script>
+
+</head>
+<body>
+	<div id="dirPanel">
+		<ul class="Toolbar">
+			<li><a class="createfolder" href="javascript:">Create</a></li>
+			<li><a class="deletefolder" href="javascript:">Delete</a></li>
+		</ul>
+		<div id="dirsList">
+		</div>
+	</div>
+	<div id="listPanel">
+		<ul class="Toolbar">
+			<li><a class="selectfile" href="javascript:">Select</a></li>
+			<li><a class="deletefile" href="javascript:">Delete</a></li>
+			<li><a class="checkall" href="javascript:">Check All</a></li>
+			<li><a class="uncheckall" href="javascript:">Uncheck All</a></li>
+			<li><a class="deletechecked" href="javascript:">Delete Checked</a></li>
+		</ul>
+		<div class="list">
+		<div id="fileThumb">
+		</div>
+		</div>
+		<div class="clear">
+		</div>
+	</div>
+	<div id="uploaderPanel">
+		<ul class="Toolbar">
+			<li><a class="addfile" href="javascript:" onclick="getImageUploader('ImageUploader1').AddFiles();return false;">
+				Select Files For Upload</a></li>
+			<!-- <li><a class="addfolder" href="#"
+		onclick="getImageUploader('ImageUploader1').AddFolders();return false;">
+	Add Folder</a></li> -->
+			<li><a class="send" href="javascript:" onclick="initProgress();send();return false;">
+				Upload</a></li>
+			<li><a class="stop" href="javascript:" onclick="cancelled=true;getImageUploader('ImageUploader1').Stop();alert('Upload was cancelled.');return false;">
+				Cancel</a></li>
+		</ul>
+
+		<script type="text/javascript">
+			createUploader();
+		</script>
+
+	</div>
+	<div id="status">
+		<div class="l">
+		</div>
+		<div id="loading">
+		</div>
+		<div class="r">
+		</div>
+	</div>
+	<div id="dialog" title="">
+		<div class="c">
+		</div>
+	</div>
+</body>
+</html>

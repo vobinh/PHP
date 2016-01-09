@@ -1,0 +1,1 @@
+<?php if(isset($mr['articles_content'])) echo $mr['articles_content'] ?>

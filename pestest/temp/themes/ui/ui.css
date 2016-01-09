@@ -1,0 +1,168 @@
+/* Input */
+input.name_people{background:url('pics/icon_name_people.png') no-repeat 0px 0px; padding-left:17px;}
+input.email{background:url('pics/icon_email.png') no-repeat 0px 0px; padding-left:17px;}
+input.phone{background:url('pics/icon_phone.png') no-repeat 0px 0px; padding-left:17px;}
+input.subject{background:url('pics/icon_subject.png') no-repeat 0px 0px; padding-left:17px;}
+input.search{background:url('pics/icon_search.png') no-repeat 0px 0px; padding-left:17px;}
+input.username{background:url('pics/icon_username.png') no-repeat 0px 0px; padding-left:17px;}
+input.password{background:url('pics/icon_password.png') no-repeat 0px 0px; padding-left:17px;}
+/* Button */
+button.search span {background-image:url('pics/icon_search.png');}
+button.new span {background-image:url('pics/icon_new.png');}
+button.save span {background-image:url('pics/icon_save.png');}
+button.delete span {background-image:url('pics/icon_delete.png');}
+button.cancel span {background-image:url('pics/icon_cancel.png');}
+button.reset span {background-image:url('pics/icon_reset.png');}
+button.back span {background-image:url('pics/icon_back.png');}
+button.print span {background-image:url('pics/icon_print.png');}
+button.report span {background-image:url('pics/icon_report.png');}
+button.list span {background-image:url('pics/icon_list.png');}
+button.import span {background-image:url('pics/icon_import.png');}
+button.export span {background-image:url('pics/icon_export.png');}
+button.backup span {background-image:url('pics/icon_backup.png');}
+button.restore span {background-image:url('pics/icon_restore.png');}
+button.download span {background-image:url('pics/icon_download.png');}
+button.upload span {background-image:url('pics/icon_upload.png');}
+button.login span {background-image:url('pics/icon_login.png');}
+button.password span {background-image:url('pics/icon_password1.png');}
+button.home span {background-image:url('pics/icon_home.png');}
+button.send_email span {background-image:url('pics/icon_send_email.png');}
+button.close span {background-image:url('pics/icon_close.png');}
+button.duplicate span {background-image:url('pics/icon_duplicate.png');}
+button.preview span {background-image:url('pics/icon_preview.png');}
+button.update span {background-image:url('pics/icon_update.png');}
+button.remove span {background-image:url('pics/icon_remove.gif');}
+button.change_order span {background-image:url('pics/icon_change_order.png');}
+button.upfile span {background-image:url('pics/icon_upfile.png');}
+button.upimage span {background-image:url('pics/icon_upimage.png');}
+button.upflash span {background-image:url('pics/icon_upflash.png');}
+button.reply span {background-image:url('pics/icon_reply.png');}
+button.search span, button.new span, button.save span, button.delete span, button.cancel span, button.reset span, button.back span
+, button.print span, button.report span, button.list span, button.import span, button.export span
+, button.backup span, button.restore span, button.download span, button.upload span
+, button.login span, button.password span, button.home span, button.send_email span, button.close span, button.duplicate span, button.preview span
+, button.upfile span, button.upimage span, button.upflash span, button.remove span, button.update span, button.change_order span, button.reply span
+{padding-left:20px;}
+/* Icon */
+a.ico_edit {background-image:url('pics/bg_icon_edit.png');}
+a.ico_delete {background-image:url('pics/bg_icon_delete.png');}
+a.ico_edit, a.ico_delete {background-position: center 0px; background-position-x: 50%; background-position-y: 0px; width: 18px; height: 18px; text-indent: -9999px; display: inline-block;}
+a.ico_edit:hover, a.ico_delete:hover {background-position:center -18px;}
+/* Message */
+div.message
+{
+	-webkit-background-size: 40px 40px;
+	-moz-background-size: 40px 40px;
+	background-size: 40px 40px;
+	background-image: -webkit-gradient(linear, left top, right bottom,
+											color-stop(.25, rgba(255, 255, 255, .05)), color-stop(.25, transparent),
+											color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .05)),
+											color-stop(.75, rgba(255, 255, 255, .05)), color-stop(.75, transparent),
+											to(transparent));
+	background-image: -webkit-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+											transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+											transparent 75%, transparent);
+	background-image: -moz-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+											transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+											transparent 75%, transparent);
+	background-image: -ms-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+											transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+											transparent 75%, transparent);
+	background-image: -o-linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+											transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+											transparent 75%, transparent);
+	background-image: linear-gradient(135deg, rgba(255, 255, 255, .05) 25%, transparent 25%,
+											transparent 50%, rgba(255, 255, 255, .05) 50%, rgba(255, 255, 255, .05) 75%,
+											transparent 75%, transparent);
+	-moz-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+	-webkit-box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+	box-shadow: inset 0 -1px 0 rgba(255,255,255,.4);
+	border: 1px solid;
+	color: #fff;
+	padding: 5px;
+	text-shadow: 0 1px 0 rgba(0,0,0,.5);
+	-webkit-animation: animate-bg 5s linear infinite;
+	-moz-animation: animate-bg 5s linear infinite;
+	font-size:larger;
+}
+div.message img{display:inline; vertical-align:middle; padding-right:5px;}
+@-webkit-keyframes animate-bg
+{
+    from {
+        background-position: 0 0;
+    }
+    to {
+       background-position: -80px 0;
+    }
+}
+
+@-moz-keyframes animate-bg
+{
+    from {
+        background-position: 0 0;
+    }
+    to {
+       background-position: -80px 0;
+    }
+}
+div.error {
+	background-color: #de4343;
+    border-color: #c43d3d;
+}
+div.warning {
+	background-color: #eaaf51;
+	border-color: #d99a36;
+}
+div.info {
+	background-color: #4ea5cd;
+	border-color: #3b8eb5;
+}
+div.success {
+	background-color: #61b832;
+	border-color: #55a12c;
+}
+div.validation{
+	color:#F00;
+	font-size:11px;
+	font-weight:bold;
+	display:none;
+}
+/* Message Others */
+.text_error {
+	font-family:Arial;
+	font-size:12px;
+	color:#FF0000;
+}
+.success_msg {
+	font-family:Arial;
+	font-size: 12px;
+	background-color: #f9f9f9;
+	border: 1px solid #D0D0D0;
+	color: #002166;
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+}
+.warn_msg {
+	font-family:Arial;
+	font-size: 12px;
+	background-color: #FBE6F2;
+	border: 1px solid #D893A1;
+	color: #D893A1;
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+}
+.loading {
+	background: white;
+	padding: 20px;
+	border: 2px solid green;
+	display: none; /* hidden */
+	position: absolute;
+	left: 50%;
+	margin-left: -100px;
+	top: 25%;
+	width: 200px;
+	/*height: 100px;*/
+	/*margin-top: -50;*/
+    font-weight: bold;
+	font-size: large;
+}

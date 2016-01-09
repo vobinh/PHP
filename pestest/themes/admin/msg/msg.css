@@ -1,0 +1,74 @@
+div.error {
+	background: #FFBABA url('pics/icon_error.png') center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 10px 20px 10px 50px;
+	border-top: 1px solid #D8000C;
+	border-bottom: 1px solid #D8000C;
+	color: #D8000C;
+}
+div.warning {
+	background: #FEEFB3 url('pics/icon_warning.png') center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 10px 20px 10px 50px;
+	border-top: 1px solid #9F6000;
+	border-bottom: 1px solid #9F6000;
+	color: #9F6000;
+}
+div.info {
+	background: #BDE5F8 url('pics/icon_info.png') center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 10px 20px 10px 50px;
+	border-top: 1px solid #00529B;
+	border-bottom: 1px solid #00529B;
+	color: #00529B;
+}
+div.success {
+	background: #DFF2BF url('pics/icon_success.png') center no-repeat;
+	background-position: 15px 50%; /* x-pos y-pos */
+	text-align: left;
+	padding: 10px 20px 10px 50px;
+	border-top: 1px solid #4F8A10;
+	border-bottom: 1px solid #4F8A10;
+	color:#4F8A10;
+}
+.text_error {
+	font-family:Arial;
+	font-size:12px;
+	color:#FF0000;
+}
+.success_msg {
+	font-family:Arial;
+	font-size: 12px;
+	background-color: #f9f9f9;
+	border: 1px solid #D0D0D0;
+	color: #002166;
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+}
+.warn_msg {
+	font-family:Arial;
+	font-size: 12px;
+	background-color: #FBE6F2;
+	border: 1px solid #D893A1;
+	color: #D893A1;
+	margin: 14px 0 14px 0;
+	padding: 12px 10px 12px 10px;
+}
+.loading {
+	background: white;
+	padding: 20px;
+	border: 2px solid green;
+	display: none; /* hidden */
+	position: absolute;
+	left: 50%;
+	margin-left: -100px;
+	top: 25%;
+	width: 200px;
+	/*height: 100px;*/
+	/*margin-top: -50;*/
+    font-weight: bold;
+	font-size: large;
+}

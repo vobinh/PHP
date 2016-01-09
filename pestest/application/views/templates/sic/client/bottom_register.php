@@ -1,0 +1,1 @@
+<button onclick="javascript:location.href='<?php echo $this->site['base_url']?>register'" style="padding: 10px 30px; float: right;" class="btn btn-success" type="button">Register</button>

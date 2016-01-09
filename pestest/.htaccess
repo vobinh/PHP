@@ -1,0 +1,27 @@
+<IfModule !mod_php5.c>
+AddType x-mapp-php5 .php
+AddHandler x-mapp-php5 .php
+</IfModule>
+
+RewriteEngine On
+#RewriteBase /
+
+#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+#RewriteCond %{HTTPS} off
+# First rewrite to HTTPS:
+# Don't put www. here. If it is already there it will be included, if not
+# the subsequent rule will catch it.
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Now, rewrite any request to the wrong domain to use www.
+
+# Protect application and system files from being viewed
+RewriteRule ^(application|modules|system) - [F,L]
+
+# Allow any files or directories that exist to be displayed directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite all other URLs to index.php/
+RewriteRule .* index.php/$0 [PT,L]

@@ -1,0 +1,145 @@
+@charset "utf-8";
+/* CSS Document */
+table.home td.home_album
+	/* HOME ALBUM */
+	table.home_album{}	
+	table.home_album td.home_album_T_L{ }
+	table.home_album td.home_album_T_Ce{background:url(pics/bg-home_bbs_T.png) repeat-x top center; height:31px; font-size:13px;
+									  font-weight:bolder; padding-left:7px; text-align:left;}
+			/* HOME ALBUM TITLE*/						  
+			table.home_album_T_Co {}
+			table.home_album_T_Co td.home_album_T_Co_L {}
+			table.home_album_T_Co td.home_album_T_Co_Ce {}
+			table.home_album_T_Co td.home_album_T_Co_R { text-align:right; padding-right:5PX;}
+			table.home_album_T_Co td.home_album_T_Co_R a.more{font-size:12px; font-weight:bold; color:##144372; text-decoration:underline;}	
+			table.home_album_T_Co td.home_album_T_Co_R a.more:hover{font-size:12px; color:#144372 ;font-weight:bolder; text-decoration: none;}				 
+	table.home_album td.home_album_T_R{}
+	table.home_album td.home_album_M_L{}
+	table.home_album td.home_album_M_Ce{padding:5px 20px 10px 20px; border:1px solid #D6D6D6; text-align:left;}
+				table.home_album_Co{}
+			table.home_album_Co td.home_album_Co_item{ vertical-align:top;}
+					table.home_album_item{padding:10px 5px;}
+					table.home_album_item td.home_album_item_T{ background:url(pics/bg_home_album_item_T.png) no-repeat center bottom; height:20px;}
+					table.home_album_item td.home_album_item_M{ background:url(pics/bg_home_album_item_M.png) repeat-y center top; text-align:center;}
+							div.home_album_item_img{}
+							img.home_album_item_img{width:86px; height:auto; margin:3px;border:#144372  1px solid; background-color:#FFF; padding:3px;}
+							img.home_album_item_img a{width:86px; height:auto; text-align:center; padding-right:10px;*padding-right:9px;}
+							div.home_album_item_date{}
+							div.home_album_item_title{color:#144372;}
+					table.home_album_item td.home_album_item_B{background:url(pics/bg_home_album_item_B.png) no-repeat center top; height:10px;}
+	table.home_album td.home_album_M_R{}
+	table.home_album td.home_album_B_L{}
+	table.home_album td.home_album_B_Ce{}
+	table.home_album td.home_album_B_R{}
+	
+table.home td.home_bbs
+	/*HOME BBS */
+	table.home_bbs{}	
+	table.home_bbs td.home_bbs_T_L{ }
+	table.home_bbs td.home_bbs_T_Ce{background:url(pics/bg-home_bbs_T.png) repeat-x top center; height:31px; font-size:13px;
+									  font-weight:bolder; padding-left:7px; text-align:left;}
+			/* HOME BBS TITLE*/						  
+			table.home_bbs_T_Co {}
+			table.home_bbs_T_Co td.home_bbs_T_Co_L {}
+			table.home_bbs_T_Co td.home_bbs_T_Co_Ce {}
+			table.home_bbs_T_Co td.home_bbs_T_Co_R { text-align:right; padding-right:5PX;}
+			table.home_bbs_T_Co td.home_bbs_T_Co_R a.more{font-size:12px; font-weight:bold; color:##144372; text-decoration:underline;}	
+			table.home_bbs_T_Co td.home_bbs_T_Co_R a.more:hover{font-size:12px; color:#144372 ;font-weight:bolder; text-decoration: none;}				 
+	table.home_bbs td.home_bbs_T_R{}
+	table.home_bbs td.home_bbs_M_L{}
+	table.home_bbs td.home_bbs_M_Ce{padding:5px 20px 10px 20px; border:1px solid #D6D6D6; text-align:left;}
+			/* HOME BBS ITEM */
+			table.home_bbs_item td.home_bbs_item_T{}
+			table.home_bbs_item td.home_bbs_item_M{padding:10px 5px 5px 5px; text-align:left; line-height:22px;}
+			table.home_bbs_item td.home_bbs_item_M a{ color:#666;}
+			table.home_bbs_item td.home_album_item_B{}
+	table.home_bbs td.home_bbs_M_R{}
+	table.home_bbs td.home_bbs_B_L{}
+	table.home_bbs td.home_bbs_B_Ce{}
+	table.home_bbs td.home_bbs_B_R{}
+	
+table.home td.home_blog
+	/* HOME BLOG */
+	table.home_blog{}	
+	table.home_blog td.home_blog_T_L{ }
+	table.home_blog td.home_blog_T_Ce{background:url(pics/bg-home_bbs_T.png) repeat-x top center; height:31px; font-size:13px;
+									  font-weight:bolder; padding-left:7px; text-align:left;}
+			/* HOME blog TITLE*/						  
+			table.home_blog_T_Co {}
+			table.home_blog_T_Co td.home_blog_T_Co_L {}
+			table.home_blog_T_Co td.home_blog_T_Co_Ce {}
+			table.home_blog_T_Co td.home_blog_T_Co_R { text-align:right; padding-right:5PX;}
+			table.home_blog_T_Co td.home_blog_T_Co_R a.more{font-size:12px; font-weight:bold; color:##144372; text-decoration:underline;}	
+			table.home_blog_T_Co td.home_blog_T_Co_R a.more:hover{font-size:12px; color:#144372 ;font-weight:bolder; text-decoration: none;}				 
+	table.home_blog td.home_blog_T_R{}
+	table.home_blog td.home_blog_M_L{}
+	table.home_blog td.home_blog_M_Ce{padding:5px 20px 10px 20px; border:1px solid #D6D6D6; text-align:left;}
+			table.home_blog_Co{padding:10px 10px 5px 20px; line-height:20px;}
+				table.home_blog_item td.home_blog_item_TT a{color:#144372; text-decoration:none;}
+				table.home_blog_item td.home_blog_item_TT a:hover{color:#144372; text-decoration:underline;}
+				table.home_blog_item td.home_blog_item_Co{ }
+				table.home_blog_item td.home_blog_item_Co a.more{font-size:12px; color:#144372 ;font-weight:bolder; text-decoration:underline;}
+				table.home_blog_item td.home_blog_item_Co a.more:hover{font-size:12px; color:#144372 ;font-weight:bolder; text-decoration: none;}
+
+	table.home_blog td.home_blog_M_R{}
+	table.home_blog td.home_blog_B_L{}
+	table.home_blog td.home_blog_B_Ce{}
+	table.home_blog td.home_blog_B_R{}
+
+table.home td.home_news
+	/*HOME NEWS */
+	table.home_news{}	
+	table.home_news td.home_news_T_L{ }
+	table.home_news td.home_news_T_Ce{background:url(pics/bg-home_bbs_T.png) repeat-x top center; height:31px; font-size:13px;
+									  font-weight:bolder; padding-left:7px; text-align:left;}
+			/* HOME NEWS TITLE*/						  
+			table.home_news_T_Co {}
+			table.home_news_T_Co td.home_news_T_Co_L {}
+			table.home_news_T_Co td.home_news_T_Co_Ce {}
+			table.home_news_T_Co td.home_news_T_Co_R { text-align:right; padding-right:5PX;}
+			table.home_news_T_Co td.home_news_T_Co_R a.more{font-size:12px; font-weight:bold; color:##144372; text-decoration:underline;}	
+			table.home_news_T_Co td.home_news_T_Co_R a.more:hover{font-size:12px; color:#144372 ;font-weight:bolder; text-decoration: none;}				 
+	table.home_news td.home_news_T_R{}
+	table.home_news td.home_news_M_L{}
+	table.home_news td.home_news_M_Ce{padding:5px 20px 10px 20px; border:1px solid #D6D6D6; text-align:left;}
+			table.home_news_M_Co{}
+			table.home_news_M_Co td{ width:50%; padding-right:3px;}			
+				table.home_news_item{}
+				table.home_news_item td.home_news_item_img{ width:25%;vertical-align:top; }
+						/* HOME NEWS IMAGE*/
+						table.home_news_item_img{ }
+						table.home_news_item_img td.home_news_item_img_T{}
+						table.home_news_item_img td.home_news_item_img_M{ padding-left:20px;}
+						table.home_news_item_img td.home_news_item_img_M img{ width:86px; height:auto; margin:3px; border:#144372 1px solid; 
+																			background-color:#FFF; padding:3px;}
+						table.home_news_item_img td.home_news_item_img_B{}
+						/* HOME NEWS CONTENT */
+						table.home_news_item_Co{ padding-left:3px;}
+						table.home_news_item_Co td.home_news_item_Co_TT{}
+						table.home_news_item_Co td.home_news_item_Co_TT a{ text-decoration:none; color:#144372 }
+						table.home_news_item_Co td.home_news_item_Co_Co{ padding-top:5px;}
+						table.home_news_item_Co td.home_news_item_Co_Co a.more{ color:#144372; text-decoration:underline; }
+						table.home_news_item_Co td.home_news_item_Co_Co a.more: hover{ color:#144372; text-decoration:none; }	
+				table.home_news_item td.home_news_item_M{}
+				table.home_news_item td.home_news_item_M img{ }
+				table.home_news_item td.home_news_itemm_M img a{}		
+				table.home_news_item td.home_news_item_B{}	
+	table.home_news td.home_news_M_R{}
+	table.home_news td.home_news_B_L{}
+	table.home_news td.home_news_B_Ce{}
+	table.home_news td.home_news_B_R{}
+	
+table.home td.home_general
+	/*HOME GENERAL */
+	table.home_general{}	
+	table.home_general td.home_general_T_L{}
+	table.home_general td.home_general_T_Ce{/*background:url(pics/bg-home_bbs_T.png) repeat-x top center; */height:31px; font-size:13px;
+									  font-weight:bolder; padding-left:7px; text-align:left;color:#FFFFFF;}
+	table.home_general td.home_general_T_R{}
+	table.home_general td.home_general_M_L{}
+	table.home_general td.home_general_M_Ce{padding:5px 20px 10px 20px; /*border:1px solid #D6D6D6;*/ text-align:left;}
+	table.home_general td.home_general_M_R{}
+	table.home_general td.home_general_B_L{}
+	table.home_general td.home_general_B_Ce{}
+	table.home_general td.home_general_B_R{}
+.bg_left {background:url(pics/left.png) left bottom;}

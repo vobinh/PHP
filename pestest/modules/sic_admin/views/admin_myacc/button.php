@@ -1,0 +1,1 @@
+<button type="button" name="btn_update" class="button update" onclick="javascript:save();"><span><?php echo Kohana::lang('global_lang.btn_update')?></span></button>

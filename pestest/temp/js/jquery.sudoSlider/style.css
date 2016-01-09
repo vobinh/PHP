@@ -1,0 +1,13 @@
+/* CSS Document */
+#slider {
+    width:981px;
+}
+#slider img{
+    border:none;
+}
+#slider ul, #slider li{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+

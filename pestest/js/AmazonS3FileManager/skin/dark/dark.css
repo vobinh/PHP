@@ -1,0 +1,853 @@
+@import "ui.css";
+
+* {
+	margin: 0;
+	padding: 0;
+	/*font: normal 11px Verdana;*/
+	font-size: 11px;
+	font-family: Verdana, Tahoma, Aria;
+}
+
+.clear {
+	clear: both;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	background-color: #1d1d1d;
+	color: #f5fff6;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	left: 0;
+	overflow: hidden;
+}
+
+#dirPanel {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 20%;
+	border-right: 3px solid #404040;
+}
+
+#listPanel {
+	position: absolute;
+	top: 0;
+	right: 2px;;
+	bottom: 215px;
+	width: 79%;
+	overflow: hidden;
+}
+
+#listPanel .list {
+	position: absolute;
+	top: 32px;
+	bottom: 0;
+	left: 0px;
+	width: 100%;
+	overflow: auto;
+}
+
+#uploaderPanel {
+	position: absolute;
+	right: 2px;
+	width: 79%;
+	bottom: 21px;
+	height: 192px;
+	overflow: hidden;
+}
+
+#status {
+	height: 20px;
+	border-top: solid 1px #3c3c3c;
+	background: #2e2e2e;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+
+label {
+	cursor: pointer;
+}
+
+#fileThumb .item {
+	cursor: pointer;
+	float: left;
+	margin: 0px 2px 4px 0px;
+	padding: 5px 10px;
+	background-color: #5a5a5a;
+	position: relative;
+}
+
+#fileThumb .item:hover{
+	background-color: #aaa;
+}
+
+#fileThumb div.selected {
+	background-color: #288db1 !important;
+}
+
+#fileThumb .item div.image {
+	width: 100px;
+	height: 100px;
+	background-color: transparent;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-image: url('ext/default.png');
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+}
+
+#fileThumb .item div.image img {
+	max-width: 100px;
+	max-height: 100px;
+}
+
+#fileThumb .item div.caption {
+	white-space: nowrap;
+	overflow: hidden;
+	width: 100px;
+	margin-top: 2px;
+}
+
+#fileThumb .item input.check {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+#fileThumb {
+	padding: 5px 5px 5px 6px;
+}
+
+#fileThumb div {
+	font: normal 11px Tahoma;
+	text-align: center;
+}
+
+#fileThumb .name {
+	white-space: nowrap;
+	text-align: center;
+	overflow: hidden;
+	margin-top: -2px;
+}
+
+#fileThumb .date,#fileThumb .size {
+	display: none;
+}
+
+#dirsList {
+	padding: 10px;
+}
+
+#status div.l,#status div.l div {
+	float: left;
+}
+
+#status div.r {
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#status #loading {
+	display: none;
+	width: 160px;
+	height: 20px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: url('img/loading.gif') no-repeat;
+	top: 0;
+	right: 0;
+}
+
+#status div.l div {
+	margin: 1px 5px;
+	padding: 2px 5px 2px 5px;
+	background: #418294;
+}
+
+#status .l a,#status .l a:visited {
+	color: #000;
+	text-decoration: none;
+}
+
+#status .l a:hover {
+	color: #fff;
+}
+
+#status .l .cutName {
+	max-width: 400px;
+	height: 20px;
+	overflow: hidden;
+	text-align: right;
+	white-space: nowrap;
+}
+
+#status .warning {
+	color: #333;
+	font-weight: bold;
+	background: #f8b000;
+}
+
+#dialog .c {
+	padding: 5px 15px;
+	background: #808080;
+}
+
+#dialog .c div {
+	padding: 8px 0;
+}
+
+#dialog .t {
+	width: 100%;
+	padding: 2px 0;
+}
+
+#dialog input {
+	color: #333;
+	padding: 2px 5px;
+	border: 1px solid #666;
+	background: #fff;
+}
+
+/* --- */
+div.ui-dynatree-container {
+	border: 0;
+	background: #1d1d1d;
+}
+
+div.ui-dynatree-container a,div.ui-dynatree-container a:visited {
+	color: #f5fff6;
+	font: normal 12px Verdana;
+}
+
+div.ui-dynatree-container a:hover {
+	color: #6dcff6;
+	text-decoration: underline;
+}
+
+.ui-dynatree-ico-cf span.ui-dynatree-icon {
+	background-image: url('../../lib/dynatree/skin/ltFld_o.gif');
+}
+
+span.ui-dynatree-active a {
+	background-color: #68a8c1 !important;
+}
+
+a.ui-dynatree-title i {
+	color: #666;
+}
+
+a.ui-dynatree-title:hover {
+	text-decoration: none !important;
+}
+
+/* --- */
+.context-menu-theme-dark {
+	border: 1px solid #000;
+	background: #393939 url('img/cmenu-dark-bg.gif') repeat-y left top;
+}
+
+.context-menu-theme-dark .context-menu-item {
+	text-align: left;
+	cursor: pointer;
+	color: #eee;
+	font-family: Tahoma, Arial;
+	font-size: 11px;
+}
+
+.context-menu-theme-dark .context-menu-separator {
+	margin: 0px 0px 0px 32px;
+	font-size: 0px;
+	border-top: 1px solid #272727;
+	border-bottom: 1px solid #4d4d4d;
+}
+
+.context-menu-theme-dark .context-menu-item-hover {
+	border: 1px solid #222;
+	background: transparent url('img/cmenu-dark-menu-item-hover.gif')
+		repeat-x left center;
+}
+
+.context-menu-theme-dark .context-menu-item .context-menu-item-inner {
+	padding: 4px 16px 4px 35px;
+	margin-left: 1px;
+	background-color: none;
+	background-repeat: no-repeat;
+	background-position: 3px center;
+	background-image: none;
+}
+
+.context-menu-theme-dark .context-menu-item-hover .context-menu-item-inner
+	{
+	padding: 3px 15px 3px 35px;
+	margin-left: 0px;
+}
+
+.context-menu-theme-dark .context-menu-item-disabled {
+	color: #646464;
+}
+
+.Toolbar {
+	width: 100%;
+	overflow: hidden;
+	background: none repeat scroll 0 0 #2E2E2E;
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	height: 31px;
+	border-bottom: solid 1px #404040
+}
+
+.Toolbar li {
+	float: left;
+	margin: 6px;
+	display: block;
+}
+
+.Toolbar li a {
+	padding: 3px 5px 3px 25px;
+	display: block;
+	text-decoration: none;
+	color: #F5FFF6;
+}
+
+.Toolbar li a:hover {
+	background-color: #eee;
+	color: #6dcff6;
+}
+
+.selectAll {
+	background: url(img/SelectAllSmall.gif) 2px 50% no-repeat;
+}
+
+.selectNone {
+	background: url(img/DeselectAllSmall.gif) 2px 50% no-repeat;
+}
+
+.send {
+	background: url(img/SendSmall.gif) 2px 50% no-repeat;
+}
+
+.stop {
+	background: url(img/CancelSmall.gif) 2px 50% no-repeat;
+}
+
+.addfile {
+	background: url(img/addimage.gif) 2px 50% no-repeat;
+}
+
+.createfolder {
+	background: url(img/folder_add.png) 2px 50% no-repeat;
+}
+
+.deletefolder {
+	background: url(img/folder_delete.png) 2px 50% no-repeat;
+}
+
+.deletefile {
+	background: url(img/cross.png) 2px 50% no-repeat;
+}
+
+.selectfile {
+	background: url(img/accept.png) 2px 50% no-repeat;
+}
+
+.checkall {
+	background: url(img/checkall.gif) 2px 50% no-repeat;
+}
+
+.uncheckall {
+	background: url(img/uncheckall.gif) 2px 50% no-repeat;
+}
+
+.deletechecked {
+	background: url(img/deletechecked.gif) 2px 50% no-repeat;
+}
+
+/* --- */
+#fileThumb .item div.ext_aac {
+	background-image: url('ext/aac.png');
+}
+
+#fileThumb .item div.ext_ac3 {
+	background-image: url('ext/ac3.png');
+}
+
+#fileThumb .item div.ext_ace {
+	background-image: url('ext/ace.png');
+}
+
+#fileThumb .item div.ext_ade {
+	background-image: url('ext/ade.png');
+}
+
+#fileThumb .item div.ext_adp {
+	background-image: url('ext/adp.png');
+}
+
+#fileThumb .item div.ext_ai {
+	background-image: url('ext/ai.png');
+}
+
+#fileThumb .item div.ext_aiff {
+	background-image: url('ext/aiff.png');
+}
+
+#fileThumb .item div.ext_aspx {
+	background-image: url('ext/aspx.png');
+}
+
+#fileThumb .item div.ext_au {
+	background-image: url('ext/au.png');
+}
+
+#fileThumb .item div.ext_avi {
+	background-image: url('ext/avi.png');
+}
+
+#fileThumb .item div.ext_bak {
+	background-image: url('ext/bak.png');
+}
+
+#fileThumb .item div.ext_bat {
+	background-image: url('ext/bat.png');
+}
+
+#fileThumb .item div.ext_bin {
+	background-image: url('ext/bin.png');
+}
+
+#fileThumb .item div.ext_blue-ray {
+	background-image: url('ext/blue-ray.png');
+}
+
+#fileThumb .item div.ext_bmp {
+	background-image: url('ext/bmp.png');
+}
+
+#fileThumb .item div.ext_bup {
+	background-image: url('ext/bup.png');
+}
+
+#fileThumb .item div.ext_cab {
+	background-image: url('ext/cab.png');
+}
+
+#fileThumb .item div.ext_cat {
+	background-image: url('ext/cat.png');
+}
+
+#fileThumb .item div.ext_chm {
+	background-image: url('ext/chm.png');
+}
+
+#fileThumb .item div.ext_cmd {
+	background-image: url('ext/cmd.png');
+}
+
+#fileThumb .item div.ext_css {
+	background-image: url('ext/css.png');
+}
+
+#fileThumb .item div.ext_csv {
+	background-image: url('ext/csv.png');
+}
+
+#fileThumb .item div.ext_cue {
+	background-image: url('ext/cue.png');
+}
+
+#fileThumb .item div.ext_dat {
+	background-image: url('ext/dat.png');
+}
+
+#fileThumb .item div.ext_default {
+	background-image: url('ext/default.png');
+}
+
+#fileThumb .item div.ext_der {
+	background-image: url('ext/der.png');
+}
+
+#fileThumb .item div.ext_dic {
+	background-image: url('ext/dic.png');
+}
+
+#fileThumb .item div.ext_divx {
+	background-image: url('ext/divx.png');
+}
+
+#fileThumb .item div.ext_diz {
+	background-image: url('ext/diz.png');
+}
+
+#fileThumb .item div.ext_dll {
+	background-image: url('ext/dll.png');
+}
+
+#fileThumb .item div.ext_doc {
+	background-image: url('ext/doc.png');
+}
+
+#fileThumb .item div.ext_docx {
+	background-image: url('ext/docx.png');
+}
+
+#fileThumb .item div.ext_dos {
+	background-image: url('ext/dos.png');
+}
+
+#fileThumb .item div.ext_download {
+	background-image: url('ext/download.png');
+}
+
+#fileThumb .item div.ext_dvd {
+	background-image: url('ext/dvd.png');
+}
+
+#fileThumb .item div.ext_dwg {
+	background-image: url('ext/dwg.png');
+}
+
+#fileThumb .item div.ext_dwt {
+	background-image: url('ext/dwt.png');
+}
+
+#fileThumb .item div.ext_emf {
+	background-image: url('ext/emf.png');
+}
+
+#fileThumb .item div.ext_exc {
+	background-image: url('ext/exc.png');
+}
+
+#fileThumb .item div.ext_fav {
+	background-image: url('ext/fav.png');
+}
+
+#fileThumb .item div.ext_fla {
+	background-image: url('ext/fla.png');
+}
+
+#fileThumb .item div.ext_font {
+	background-image: url('ext/font.png');
+}
+
+#fileThumb .item div.ext_gif {
+	background-image: url('ext/gif.png');
+}
+
+#fileThumb .item div.ext_hlp {
+	background-image: url('ext/hlp.png');
+}
+
+#fileThumb .ext_html {
+	background-image: url('ext/html.png');
+}
+
+#fileThumb .item div.ext_ie7 {
+	background-image: url('ext/ie7.png');
+}
+
+#fileThumb .item div.ext_ifo {
+	background-image: url('ext/ifo.png');
+}
+
+#fileThumb .item div.ext_inf {
+	background-image: url('ext/inf.png');
+}
+
+#fileThumb .item div.ext_ini {
+	background-image: url('ext/ini.png');
+}
+
+#fileThumb .item div.ext_iso {
+	background-image: url('ext/iso.png');
+}
+
+#fileThumb .item div.ext_isp {
+	background-image: url('ext/isp.png');
+}
+
+#fileThumb .item div.ext_java {
+	background-image: url('ext/java.png');
+}
+
+#fileThumb .item div.ext_jfif {
+	background-image: url('ext/jfif.png');
+}
+
+#fileThumb .item div.ext_jpeg {
+	background-image: url('ext/jpeg.png');
+}
+
+#fileThumb .item div.ext_jpg {
+	background-image: url('ext/jpg.png');
+}
+
+#fileThumb .item div.ext_js {
+	background-image: url('ext/js.png');
+}
+
+#fileThumb .item div.ext_log {
+	background-image: url('ext/log.png');
+}
+
+#fileThumb .item div.ext_m4a {
+	background-image: url('ext/m4a.png');
+}
+
+#fileThumb .item div.ext_m4p {
+	background-image: url('ext/m4p.png');
+}
+
+#fileThumb .item div.ext_mmf {
+	background-image: url('ext/mmf.png');
+}
+
+#fileThumb .item div.ext_mmm {
+	background-image: url('ext/mmm.png');
+}
+
+#fileThumb .item div.ext_mov {
+	background-image: url('ext/mov.png');
+}
+
+#fileThumb .item div.ext_movie {
+	background-image: url('ext/movie.png');
+}
+
+#fileThumb .item div.ext_mp2 {
+	background-image: url('ext/mp2.png');
+}
+
+#fileThumb .item div.ext_mp2v {
+	background-image: url('ext/mp2v.png');
+}
+
+#fileThumb .item div.ext_mp3 {
+	background-image: url('ext/mp3.png');
+}
+
+#fileThumb .item div.ext_mp4 {
+	background-image: url('ext/mp4.png');
+}
+
+#fileThumb .item div.ext_mpe {
+	background-image: url('ext/mpe.png');
+}
+
+#fileThumb .item div.ext_mpeg {
+	background-image: url('ext/mpeg.png');
+}
+
+#fileThumb .item div.ext_mpg {
+	background-image: url('ext/mpg.png');
+}
+
+#fileThumb .item div.ext_mpv2 {
+	background-image: url('ext/mpv2.png');
+}
+
+#fileThumb .item div.ext_msi {
+	background-image: url('ext/msi.png');
+}
+
+#fileThumb .item div.ext_music {
+	background-image: url('ext/music.png');
+}
+
+#fileThumb .item div.ext_nfo {
+	background-image: url('ext/nfo.png');
+}
+
+#fileThumb .item div.ext_one {
+	background-image: url('ext/one.png');
+}
+
+#fileThumb .item div.ext_pdd {
+	background-image: url('ext/pdd.png');
+}
+
+#fileThumb .item div.ext_pdf {
+	background-image: url('ext/pdf.png');
+}
+
+#fileThumb .item div.ext_php {
+	background-image: url('ext/php.png');
+}
+
+#fileThumb .item div.ext_png {
+	background-image: url('ext/png.png');
+}
+
+#fileThumb .item div.ext_pps {
+	background-image: url('ext/pps.png');
+}
+
+#fileThumb .item div.ext_ppt {
+	background-image: url('ext/ppt.png');
+}
+
+#fileThumb .item div.ext_pptx {
+	background-image: url('ext/pptx.png');
+}
+
+#fileThumb .item div.ext_print {
+	background-image: url('ext/print.png');
+}
+
+#fileThumb .item div.ext_psd {
+	background-image: url('ext/psd.png');
+}
+
+#fileThumb .item div.ext_rar {
+	background-image: url('ext/rar.png');
+}
+
+#fileThumb .item div.ext_rb {
+	background-image: url('ext/rb.png');
+}
+
+#fileThumb .item div.ext_reg {
+	background-image: url('ext/reg.png');
+}
+
+#fileThumb .item div.ext_rtf {
+	background-image: url('ext/rtf.png');
+}
+
+#fileThumb .item div.ext_safari {
+	background-image: url('ext/safari.png');
+}
+
+#fileThumb .item div.ext_scp {
+	background-image: url('ext/scp.png');
+}
+
+#fileThumb .item div.ext_search {
+	background-image: url('ext/search.png');
+}
+
+#fileThumb .item div.ext_sql {
+	background-image: url('ext/sql.png');
+}
+
+#fileThumb .item div.ext_swf {
+	background-image: url('ext/swf.png');
+}
+
+#fileThumb .item div.ext_sys {
+	background-image: url('ext/sys.png');
+}
+
+#fileThumb .item div.ext_theme {
+	background-image: url('ext/theme.png');
+}
+
+#fileThumb .item div.ext_tif {
+	background-image: url('ext/tif.png');
+}
+
+#fileThumb .item div.ext_tiff {
+	background-image: url('ext/tiff.png');
+}
+
+#fileThumb .item div.ext_tmp {
+	background-image: url('ext/tmp.png');
+}
+
+#fileThumb .item div.ext_ttf {
+	background-image: url('ext/ttf.png');
+}
+
+#fileThumb .item div.ext_txt {
+	background-image: url('ext/txt.png');
+}
+
+#fileThumb .item div.ext_uis {
+	background-image: url('ext/uis.png');
+}
+
+#fileThumb .item div.ext_upload {
+	background-image: url('ext/upload.png');
+}
+
+#fileThumb .item div.ext_url {
+	background-image: url('ext/url.png');
+}
+
+#fileThumb .item div.ext_vcr {
+	background-image: url('ext/vcr.png');
+}
+
+#fileThumb .item div.ext_video {
+	background-image: url('ext/video.png');
+}
+
+#fileThumb .item div.ext_vob {
+	background-image: url('ext/vob.png');
+}
+
+#fileThumb .item div.ext_wba {
+	background-image: url('ext/wba.png');
+}
+
+#fileThumb .item div.ext_wma {
+	background-image: url('ext/wma.png');
+}
+
+#fileThumb .item div.ext_wmv {
+	background-image: url('ext/wmv.png');
+}
+
+#fileThumb .item div.ext_wpl {
+	background-image: url('ext/wpl.png');
+}
+
+#fileThumb .item div.ext_wri {
+	background-image: url('ext/wri.png');
+}
+
+#fileThumb .item div.ext_wtx {
+	background-image: url('ext/wtx.png');
+}
+
+#fileThumb .item div.ext_wzv {
+	background-image: url('ext/wzv.png');
+}
+
+#fileThumb .item div.ext_xls {
+	background-image: url('ext/xls.png');
+}
+
+#fileThumb .item div.ext_xlsx {
+	background-image: url('ext/xlsx.png');
+}
+
+#fileThumb .item div.ext_xml {
+	background-image: url('ext/xml.png');
+}
+
+#fileThumb .item div.ext_xsl {
+	background-image: url('ext/xsl.png');
+}
+
+#fileThumb .item div.ext_zap {
+	background-image: url('ext/zap.png');
+}
+
+#fileThumb .item div.ext_zip {
+	background-image: url('ext/zip.png');
+}
