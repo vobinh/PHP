@@ -242,7 +242,7 @@
               <b><?php echo $this->format_currency($list['price'])?></b>
               </button>
               <br>
-              <span style="color:red; white-space: nowrap;">Valid for <?php echo !empty($list['day_valid'])?$list['day_valid']:'no limit'; ?><?php echo($list['day_valid'] > 1)?' days':" day"?></span>
+              <span style="color:red; white-space: nowrap;padding-top:1px; display:inline-block;">Valid for <?php echo !empty($list['day_valid'])?$list['day_valid']:'no limit'; ?><?php echo($list['day_valid'] > 1)?' days':" day"?></span>
               <div>
               <?php if(isset($list['type']) && $list['type'] == 0){?>
                 <a style="display: inline-flex; white-space: nowrap;" tabindex="0" class="link a_code_type" role="button" data-toggle="modal" data-target="#myModal_type_0" data-trigger="focus" title=""><b>E-Course&nbsp;</b><span style="font-size: 20px;" class="glyphicon glyphicon glyphicon-question-sign"></span></a>
