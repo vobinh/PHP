@@ -113,7 +113,7 @@
     <input type="hidden" value="<?php echo $mr['idtest']?>" name="hd_test"/>
     <input type="hidden" value="<?php echo $mr['testing_code']?>" name="testing_code"/>
     <input type="hidden" value="<?php echo $mr['parent_id']?>" name="parent_id"/>
-
+    <input type="hidden" value="" id="txt_hd_cate_id" name="txt_hd_cate_id"/>
     <input type="hidden" name="txt_id_courses" id="txt_id_courses" value="<?php echo isset($courses['id'])?$courses['id']:"" ?>">
     <input type="hidden" name="txt_id_lesson" id="txt_id_lesson" value="<?php echo isset($lesson['id'])?$lesson['id']:"" ?>">
 
@@ -261,21 +261,13 @@
       <div id="tabs_result" class="main_data_13 box_shadow" style="overflow: hidden;">
         <ul>
           <li><a href="#tabs-1">RESULT</a></li>
-          <?php 
-            /*
-              remove Missed Questions
-            
-          ?>
-          <li <?php if(empty($mr['arrayquestion'])) echo 'style="display:none"'?> ><a href="#tabs-2">Missed Questions</a></li>
-          <?php */?>
+          <?php if(!empty($courses) && $courses['type'] == 1){ ?>
+          <li><a href="#tabs-2">CATEGORY</a></li>
+          <?php }?>
         </ul>
         <div id="tabs-1" style="overflow: hidden;">
           <div class="col-md-6">
-              <?php if(!empty($mr['mlist'])){
-                  //echo '<pre>';
-                  //print_r($mr['mlist']);
-                  //die();
-              ?>
+              <?php if(!empty($mr['mlist'])){ ?>
               <div class="box_shadow" id='category'>
               <div class="table-responsive">
                 <table class="table table-striped table-condensed main_data_13" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 0;">
@@ -309,10 +301,10 @@
                             <?php if(!empty($value['answer'])){
                               foreach($value['answer'] as $val){
                                  $question = isset($val['question'])?$val['question']:'';
-                                 $has    = (isset($val['has']) && $val['has'] != '')?$val['has']:'No Answer';
-                                 $answer = isset($val['answer'])?$val['answer']:'';
+                                 $has      = (isset($val['has']) && $val['has'] != '')?$val['has']:'No Answer';
+                                 $answer   = isset($val['answer'])?$val['answer']:'';
 
-                                 $m_images    = (isset($val['images']) && $val['images'] != '')?$val['images']:'';
+                                 $m_images  = (isset($val['images']) && $val['images'] != '')?$val['images']:'';
                                  $hasimages = isset($val['hasimages'])?$val['hasimages']:'No Answer';
                                  if(!empty($val['images'])){
                                     if($m_images != $hasimages){ ?>
@@ -579,62 +571,33 @@
           </div>
         </div> <!-- end tab 1 -->
 
-        <?php /*?>
-        <div id="tabs-2" <?php if(empty($mr['arrayquestion'])){ echo 'style="display:none"'; }else{ ?>style="overflow: hidden;"<?php }?> >
-          <div class="col-sm-12 col-md-12">
-          <!-- data -->
-            <?php
-              $i=0;
-              if(!empty($mr['arrayquestion']) && (isset($mr['last_test'][0]['test']['displayexplanation']) && ($mr['last_test'][0]['test']['displayexplanation'] == 'Y'))){?>
-              <div class="box_shadow">
-                <table class="table table-striped table-condensed main_data_13" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 0;">
+        <!-- tab 2 -->
+        <?php if(!empty($courses) && $courses['type'] == 1){ ?>
+        <div id="tabs-2" style="overflow: hidden;">
+          <div class="col-sm-12">
+            <div class="box_shadow">
+              <div class="table-responsive">
+                  <table class="table table-striped table-condensed main_data_13" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 0;">
                   <?php
-                  foreach($mr['arrayquestion'] as $value){?>
-                    <tr class="infowrong" style="border-bottom: 1px solid #ccc;">
-                      <td align="left" style="border-top: 0;">
-                        <span style="color:#FF0000">
-                          Question: <?php echo isset($value['question'])?$value['question']:'';?>
-                        </span>
-                        <?php  
-                          if($value['hasimages']!='')
-                            echo'<br />Your Answer: <img src="'.url::base().'uploads/answer/'.$value['hasimages'].'" width="20px" />';
-                          elseif($value['hasanswer']!='')
-                            echo '<br />Your Answer: '.$value['hasanswer'];
-                          else
-                            echo '<br />No Answer';
-                        ?>
-                           
-                        <?php  
-                          if($value['images']!='')
-                            echo '<br />Right Answer:  <img src="'.url::base().'uploads/answer/'.$value['images'].'" width="20px" />';
-                          elseif($value['answer']!='')
-                            echo '<br />Right Answer: '.$value['answer']; 
-                          else
-                            echo'';
-                        ?>
-                           
-                        <?php 
-                          if(isset($value['answer_description']) && ($value['answer_description'] != "")) 
-                            echo '<br />Explanation: '.$value['answer_description']; 
-                          else echo '';
-                        ?>
-                      </td>
-                    </tr>
-                  <?php }?>
-                </table>
+                    foreach($mr['mlist'] as $key => $value){ ?>
+                      <tr>
+                        <td align="left">
+                          <?php echo $key ?>: <span style="color:red"><?php echo  ($value[1] != 0)? number_format(($value[0]*100)/$value[1], 2, ',', ' '):''; ?>% </span><br />
+                          ( total <?php echo $value[1]?> - answer : <?php echo $value[0];?> )
+                        </td>
+                        <td width="15%" align="center" style="vertical-align: middle;">
+                          <?php if((($value[0]*100)/$value[1]) != 100) {?>
+                            <button type="button" class="btn" onclick="fn_test_cate(<?php echo $value[2]?>)">Only Missing</button>
+                          <?php }?>       
+                        </td>
+                      </tr>
+                    <?php }?>
+                  </table>
                 </div>
-              <?php }?>
-              <!-- phan trang -->
-              <div id="gallerypaginate" class="paginationstyle" style="padding-right:8px;clear:both;text-align:center;">
-                <a href="javascript:void(0)" rel="previous"><< Previous</a>
-                <span class="paginateinfo"></span>
-                <a href="javascript:void(0)" rel="next">Next >></a>
               </div>
-            <!-- end phan trang -->
-            <!-- end data -->
           </div>
         </div>
-        <?php */?>
+        <?php }?>
         <!-- end tab 2 -->
       </div>
     </div>
@@ -677,6 +640,10 @@
   function fn_finish(){
     $('#txt_finish').val(1);
     $('#testagain').submit();
+  }
+  function fn_test_cate(id){
+    $('#txt_hd_cate_id').val(id);
+    $('#frmcategory').submit();
   }
 </script>
  

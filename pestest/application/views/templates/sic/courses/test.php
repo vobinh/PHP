@@ -122,7 +122,7 @@ $(document).ready(function() {
             <input type="hidden" value="<?php echo $category_id.'|'.$key;?>" name="<?php echo 'category[]'?>"/>
             <?php
               for($i=0;isset($mlist[$k]['questionnaires']) && $i<count($mlist[$k]['questionnaires']);$i++) { ?>
-                <div style="width:100%; float:left;min-height:180px;" class="questionnaires">
+                <div style="width:100%; float:left;min-height:180px; <?php if(isset($mlist[$k]['display']) && $mlist[$k]['display'] == 'no'){ echo 'display:none;'; }?>" class="questionnaires" >
                   <?php if(isset($mlist[$k]['category']) && $mlist[$k]['category'] != $category) { ?>
           
                     <?php
@@ -162,7 +162,16 @@ $(document).ready(function() {
                     <input type="hidden" value="<?php echo $mlist[$k]['questionnaires'][$i]['uid'] ?>" name="hd_question[]" />
                 </div>
               </div>
-            <?php  $n++;} ?>
+            <?php
+              if(isset($mlist[$k]['display'])){
+                if($mlist[$k]['display'] == 'yes'){
+                  $n++;
+                }
+              }else{
+                $n++;
+              }
+              
+            } ?>
           <?php } ?>
         
           <div style="padding-right:8px;clear:both;text-align:center;">
