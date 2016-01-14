@@ -122,7 +122,7 @@
               </div>
             </div>
             <div class="col-sm-4 col-md-5 pd_reset text-center" style="margin-bottom: 5px;padding: 0px;">
-              <span style="display: inline-block;font-size: 12px;font-weight: bold;height: 42px;overflow: hidden;line-height: 15px;">You have already purchased this course.</span>
+              <p style="font-size: 12px;font-weight: bold;height: 42px;overflow: hidden;line-height: 15px;margin:0px;">You have already purchased this course.</p>
               <h4 style="font-size:14px; margin: auto; font-weight: bold;white-space: nowrap;">See <a tabindex="0" class="link text-success" href="<?php echo url::base()?>">My Courses</a></h4>
               <div>
               <?php if(isset($list['type']) && $list['type'] == 0){?>
@@ -238,11 +238,11 @@
                 <?php /*?>onclick="javascript:location.href='<?php echo $this->site['base_url']?>test/start/<?php echo base64_encode($list['id'].text::random('numeric',3))?>/<?php echo text::random('numeric',3)?>'"<?php */?>
                 onclick="javascript:location.href='<?php echo $this->site['base_url']?>courses/free_courses/<?php echo base64_encode($list['id'].text::random('numeric',3))?>/<?php echo text::random('numeric',3)?>'"
               <?php }?>
-              style="padding: 10px 15px; min-width: 85px;" class="btn btn-success" type="button">
+              style="padding: 10px 15px; min-width: 85px;height: 42px;" class="btn btn-success" type="button">
               <b><?php echo $this->format_currency($list['price'])?></b>
               </button>
-              <br>
-              <span style="color:red; white-space: nowrap;padding-top:1px; display:inline-block;">Valid for <?php echo !empty($list['day_valid'])?$list['day_valid']:'no limit'; ?><?php echo($list['day_valid'] > 1)?' days':" day"?></span>
+              <!-- <span style=" white-space: nowrap;display:inline-block;">Valid for <?php //echo !empty($list['day_valid'])?$list['day_valid']:'no limit'; ?><?php //echo($list['day_valid'] > 1)?' days':" day"?></span> -->
+              <h4 style="font-size:14px; margin: auto; font-weight: bold;white-space: nowrap; color:red;">Valid for <?php echo !empty($list['day_valid'])?$list['day_valid']:'no limit'; ?><?php echo($list['day_valid'] > 1)?' days':" day"?></h4>
               <div>
               <?php if(isset($list['type']) && $list['type'] == 0){?>
                 <a style="display: inline-flex; white-space: nowrap;" tabindex="0" class="link a_code_type" role="button" data-toggle="modal" data-target="#myModal_type_0" data-trigger="focus" title=""><b>E-Course&nbsp;</b><span style="font-size: 20px;" class="glyphicon glyphicon glyphicon-question-sign"></span></a>
