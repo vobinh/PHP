@@ -134,17 +134,17 @@
               <div style="height: 40px;margin-top: 5px;">
                 <?php 
                 $txt_int_day = 0;
+                if(!empty($list['authorized_day_using']) && !empty($list['authorized_day']) && strtotime("-". $list['authorized_day'] ." day" ) <= $list['authorized_day_using']){
+                  $m_date      = strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day');
+                  $date1       = date_create(date('Y-m-d', $m_date));
+                  $date2       = date_create(date('Y-m-d'));
+                  $diff        = date_diff($date1,$date2);
+                  $txt_int_day = (int)$diff->format("%a");
+                  //$txt_int_day = round(abs(strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day') - strtotime(date('m/d/Y')))/(60*60*24));
+                }else{
+                  $txt_int_day = 0;
+                }
                 if(!empty($list['sponsor_icon'])){
-                  if(!empty($list['authorized_day_using']) && !empty($list['authorized_day']) && strtotime("-". $list['authorized_day'] ." day" ) <= $list['authorized_day_using']){
-                    $m_date      = strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day');
-                    $date1       = date_create(date('Y-m-d', $m_date));
-                    $date2       = date_create(date('Y-m-d'));
-                    $diff        = date_diff($date1,$date2);
-                    $txt_int_day = (int)$diff->format("%a");
-                    //$txt_int_day = round(abs(strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day') - strtotime(date('m/d/Y')))/(60*60*24));
-                  }else{
-                    $txt_int_day = 0;
-                  }
                   if($txt_int_day > 0){
                     $check_icon = $s3Client->doesObjectExist($s3_bucket, "sponsor_icon/".$list['sponsor_icon']);
                       if($check_icon == '1'){ ?>
@@ -255,17 +255,17 @@
               <div style="height: 40px;margin-top: 5px;">
                 <?php
                 $txt_int_day = 0; 
+                if(!empty($list['authorized_day_using']) && !empty($list['authorized_day']) && strtotime("-". $list['authorized_day'] ." day" ) <= $list['authorized_day_using']){
+                  $m_date      = strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day');
+                  $date1       = date_create(date('Y-m-d', $m_date));
+                  $date2       = date_create(date('Y-m-d'));
+                  $diff        = date_diff($date1,$date2);
+                  $txt_int_day = (int)$diff->format("%a");
+                  //$txt_int_day = round(abs(strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day') - strtotime(date('m/d/Y')))/(60*60*24));
+                }else{
+                  $txt_int_day = 0;
+                }
                 if(!empty($list['sponsor_icon'])){
-                  if(!empty($list['authorized_day_using']) && !empty($list['authorized_day']) && strtotime("-". $list['authorized_day'] ." day" ) <= $list['authorized_day_using']){
-                    $m_date      = strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day');
-                    $date1       = date_create(date('Y-m-d', $m_date));
-                    $date2       = date_create(date('Y-m-d'));
-                    $diff        = date_diff($date1,$date2);
-                    $txt_int_day = (int)$diff->format("%a");
-                    //$txt_int_day = round(abs(strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day') - strtotime(date('m/d/Y')))/(60*60*24));
-                  }else{
-                    $txt_int_day = 0;
-                  }
                   if($txt_int_day > 0){
                     $check_icon = $s3Client->doesObjectExist($s3_bucket, "sponsor_icon/".$list['sponsor_icon']);
                       if($check_icon == '1'){ ?>
