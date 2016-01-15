@@ -124,7 +124,9 @@ $(function() {
                 <?php }?>
               </div>
               <div style="height: 40px;margin-top: 5px;">
-                <?php if(!empty($list['sponsor_icon'])){
+                <?php 
+                $txt_int_day = 0;
+                if(!empty($list['sponsor_icon'])){
                   if(!empty($list['authorized_day_using']) && !empty($list['authorized_day']) && strtotime("-". $list['authorized_day'] ." day" ) <= $list['authorized_day_using']){
                     $m_date      = strtotime(date('m/d/Y',$list['authorized_day_using']). ' + '.$list['authorized_day'].' day');
                     $date1       = date_create(date('Y-m-d', $m_date));
