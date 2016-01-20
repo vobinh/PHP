@@ -445,20 +445,14 @@ class Payment_Controller extends Template_Controller {
 				
 				require_once(APPPATH.'vendor/stripe_3.4.0/init.php');
 				\Stripe\Stripe::setApiKey($test_secret_key);
-				$data_stripe = $this->input->post('data_stripe');
-				$m_total     = $this->input->post('m_total');
-				$m_code      = $this->input->post('m_code');
-				$m_type_code = $this->input->post('m_type_code');
+				$data_stripe  = $this->input->post('data_stripe');
+				$m_total      = $this->input->post('m_total');
+				$m_code       = $this->input->post('m_code');
+				$m_type_code  = $this->input->post('m_type_code');
 				$item_code_id = '';
 				$token = $data_stripe['id'];
 				require_once Kohana::find_file('views/mailgun','init');
 				try {
-					$charge = \Stripe\Charge::create(array(
-						"amount"      => $m_total, // amount in cents, again
-						"currency"    => "usd",
-						"source"      => $token,
-						"description" => "Payment Courses"
-					));
 					if($this->session->get('sess_search')){			
 						$this->search = $this->session->get('sess_search');
 						$id           = $this->sess_cus['id'];
@@ -467,7 +461,16 @@ class Payment_Controller extends Template_Controller {
 						$ordercode    = $this->search['orderid'];
 						$promotionid  = $this->search['promotion_id'];
 						$uid          = $this->search['id'];
-
+						/**
+						 * payment
+						 */
+						$charge = \Stripe\Charge::create(array(
+							"amount"      => $m_total, // amount in cents, again
+							"currency"    => "usd",
+							"source"      => $token,
+							"description" => "PestSchool - Course Purchase (".$this->search['id'].")"
+						));
+						
 						if($this->session->get('sess_search'))
 					  		$this->session->delete('sess_search');
 					  	/* update promotin */
