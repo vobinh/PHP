@@ -41,9 +41,9 @@
 </script>
 
 <script>
-$(document).ready(function() {
-  //startStopCountUp();
-});
+  $(document).ready(function() {
+    //startStopCountUp();
+  });
   function counteranswer(){
     var count = $('input:radio:checked').length;
     $("span#counteranswer").html(count+'/'+<?php echo $mr['qty_question'] ?>);
@@ -52,6 +52,18 @@ $(document).ready(function() {
   function movetop(){
    	window.scrollTo(0, 0);
   }
+  $(function() {
+    $('#sel_test').change(function() {
+        document.forms['catefrm'].submit();
+    });
+    $('.demo-list input').on('ifChecked', function(event){
+      this.click();
+    }).iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio_square-blue',
+      increaseArea: '20%'
+    });
+});
 </script>
 
 <link href="<?php echo isset($this->site)?$this->site['theme_url']:''?>pagehome/pagehome.css" rel="stylesheet" type="text/css">
@@ -69,11 +81,11 @@ $(document).ready(function() {
 <?php //} ?>
 <div class="col-ms-12 col-md-12">
 	<div id='notice' style="border: 1px solid rgb(238, 153, 137);background-color: rgb(248, 158, 75);float:left; margin-left: 100px; padding: 5px;position: fixed;font-size: 23px;color: rgb(255, 255, 255);display: block;width: auto;min-width:175px;z-index:1;top:102px;font-weight: bold;text-align: center;" >
-	    	
+	    Waiting...
 	</div>
 
 	<div class="flip-counter clock" style="">
-	  <span id="spanTimer" style="font-size: 30px;">00:00:00:000</span>
+	  <span id="spanTimer" style="font-size: 30px;">00:00:00</span>
 	</div>
 
 	<div class="counteranswer clock" style="font-size: 18px;">
@@ -201,21 +213,9 @@ $(document).ready(function() {
       <?php */?>
       <!-- END PHAN TRANG -->
       <script>
-       $(document).ready(function(){
+        $(document).ready(function(){
           $('.ques img').addClass('img-responsive').height('auto');
         });
-      $(function() {
-          $('#sel_test').change(function() {
-              document.forms['catefrm'].submit();
-          });
-            $('.demo-list input').on('ifChecked', function(event){
-              this.click();
-            }).iCheck({
-              checkboxClass: 'icheckbox_square-blue',
-              radioClass: 'iradio_square-blue',
-              increaseArea: '20%'
-            });
-      });
       </script>
 
       <!-- PHAN TRANG -->

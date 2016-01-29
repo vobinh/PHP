@@ -110,7 +110,7 @@ function checkvalid() {
 	if(($('#txt_checkcode').val() != '')){
 		txt_checkcode = $('#txt_checkcode').val();
 		if(txt_checkcode.length != 12){
-			$.growl.error({ message: "Correction invalid code." });
+			$.growl.error({ message: "Invalid discount code." });
 			check =  false;
 			return false;
 		}
@@ -395,7 +395,7 @@ function checkvalid() {
 function checkcode(){
 	txt_checkcode = $('#txt_checkcode').val();
 	if(txt_checkcode.length != 12){
-		$.growl.error({ message: "Correction invalid code." });
+		$.growl.error({ message: "Invalid discount code." });
 		return false;
 	}
 	$('#frm_checkcode').submit()

@@ -228,13 +228,14 @@
               <?php }elseif(!empty($courses) && $courses['type'] == 1){
                 if((!empty($study[0]['course_pass']) && $study[0]['course_pass'] == 'Y') || $scoreparent >= $chartlist[0]['test']['pass_score']) {?> 
                   <div>
+                  	<span style="font-weight: bold;margin-top: 10px;">You have passed the test.</span>
                     <button style="min-width:110px; margin-top: 10px;" class="btn btn-success btn-lg" type="button" name="btn_finish" id="btn_finish" onclick="fn_finish()">
                       Finish
                     </button>
                   </div>
                 <?php }else{?>
                   <div style="text-align: center;margin-top: 10px;font-weight: bold;">
-                    <span>Your score is not high enough to proceed to the next lesson. Click either "Test Again" or "Only Missing" to improve your score.</span>
+                    <span>You scored below the passing score. Review your questions and click “Test Again” or “Only Missing” to improve your score.</span>
                   </div>
                 <?php }?>
             <?php }?>
@@ -247,7 +248,7 @@
               <span>Only Missing</span>
             </button>
      
-            <button style="min-width:110px; margin-top: 10px;margin-left: 5px;" class="btn btn-success" type="button" name="btn_submit" id="btn_submit" onclick=" $('.showwrong').hide('fast'); $('#contail').show('slows'); $('#container').hide('fast'); $('#container2').show('fast'); $('#tabs_result').tabs('option', 'active', 0 );">
+            <button style="min-width:110px; margin-top: 10px;margin-left: 5px;" class="btn btn-success" type="button" name="btn_submit" id="btn_submit" onclick="$('#tabs_result').tabs('option', 'active', 0 );$('.showwrong').hide('fast');$('#contail').show();$('#container').hide('fast');$('#container2').show();">
               <span>Total Score</span>
             </button>
           </form>
@@ -262,7 +263,7 @@
         <ul>
           <li><a href="#tabs-1">RESULT</a></li>
           <?php if(!empty($courses) && $courses['type'] == 1){ ?>
-          <li><a href="#tabs-2">CATEGORY</a></li>
+          <li><a href="#tabs-2">RETEST BY CATEGORY</a></li>
           <?php }?>
         </ul>
         <div id="tabs-1" style="overflow: hidden;">
@@ -337,7 +338,7 @@
                       </td>
                 
                       <td width="15%" align="center" style="vertical-align: middle;">
-                        <button type="button" class="btn" id="viewchart<?php echo $value[2]?>" onclick=" $('.showwrong').hide('fast'); $('#contail').show('slows'); getChart('<?php echo $value[2]?>','<?php echo $this->sess_cus['id']?>','<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>','<?php echo isset($courses['id'])?$courses['id']:"0" ?>')">view chart</button>
+                        <button type="button" class="btn" id="viewchart<?php echo $value[2]?>" onclick=" $('.showwrong').hide('fast'); $('#contail').show('slows'); getChart('<?php echo $value[2]?>','<?php echo $this->sess_cus['id']?>','<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>','<?php echo isset($courses['id'])?$courses['id']:"0" ?>')">View Graph</button>
                       </td>
                     </tr>
                   <?php }?>
@@ -476,7 +477,7 @@
                       if(!empty($chartlist) && $chartlist!=false){
                         foreach($arraytest as $value){?>
                       {
-                        name: 'only missing',
+                        name: 'Only Missing',
                         color: '#ADFF2F',
                         data: [
                           <?php

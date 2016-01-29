@@ -212,12 +212,12 @@ class Payment_Controller extends Template_Controller {
 					if($type == 'json'){
 						$array = array(
 							'type'     => 'error',
-							'messages' => 'Correction invalid code.',
+							'messages' => 'Invalid discount code.',
 						);
 						echo json_encode($array);
 						die();
 					}else{
-						$this->session->set_flash('error_msg','Correction invalid code.');
+						$this->session->set_flash('error_msg','Invalid discount code.');
 					}
 				}
 			}else{
@@ -319,24 +319,24 @@ class Payment_Controller extends Template_Controller {
 						if($type == 'json'){
 							$array = array(
 								'type'     => 'error',
-								'messages' => 'Correction invalid code.',
+								'messages' => 'Invalid discount code.',
 							);
 							echo json_encode($array);
 							die();
 						}else{
-							$this->session->set_flash('error_msg','Correction invalid code.');
+							$this->session->set_flash('error_msg','Invalid discount code.');
 						}
 					}
 				}else{
 					if($type == 'json'){
 						$array = array(
 							'type'     => 'error',
-							'messages' => 'Correction invalid code.',
+							'messages' => 'Invalid discount code.',
 						);
 						echo json_encode($array);
 						die();
 					}else{
-						$this->session->set_flash('error_msg','Correction invalid code.');
+						$this->session->set_flash('error_msg','Invalid discount code.');
 					}
 				}
 			}
