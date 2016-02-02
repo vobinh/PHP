@@ -3,8 +3,7 @@ class Courses_Controller extends Template_Controller {
 	
 	public $template;	
 
-	public function __construct()
-    {
+	public function __construct(){
         parent::__construct();
         $this->template = new View('templates/'.$this->site['config']['TEMPLATE'].'/client/home');
 		// Init session 
@@ -18,7 +17,6 @@ class Courses_Controller extends Template_Controller {
 		$this->testingdetail_model      = new Testingdetail_Model(); 
 		$this->testing_category_model   = new Testingcategory_Model();
 		$this->promotion_model          = new Promotion_Model();
-		
 		$this->courses_model            = new Courses_Model();
 		$this->study_model              = new Study_Model();
 		$this->lesson_model             = new Lesson_Model();
@@ -26,19 +24,14 @@ class Courses_Controller extends Template_Controller {
 		$this->member_certificate_model = new Member_certificate_Model();
 		$this->certificate_model        = new Certificate_Model();
 		$this->data_template_model      = new Data_template_Model();
-		//print_r($this->sess_cus);
 		if($this->sess_cus =="")
 		{
 			url::redirect(url::base());
 			die();
 		}
-		
     }
-	
-	
-    
-   	private function _get_session_template()
-	{
+
+   	private function _get_session_template(){
 		if($this->session->get('error_msg'))
 			$this->template->error_msg = $this->session->get('error_msg');
 		if($this->session->get('warning_msg'))
@@ -49,16 +42,9 @@ class Courses_Controller extends Template_Controller {
 			$this->template->info_msg = $this->session->get('info_msg');	
 	}
 	
-	public function __call($method, $arguments)
-	{
-		
-	} 
+	public function __call($method, $arguments){} 
 	
-	public function show_arr($arr){
-		echo '<pre>';
-			print_r($arr);
-		echo '</pre>';
-	}
+	public function show_arr($arr){echo '<pre>';print_r($arr);echo '</pre>';}
 	
 	public function download_s3($name=""){
 		require_once Kohana::find_file('views/aws','init');
@@ -77,7 +63,6 @@ class Courses_Controller extends Template_Controller {
 		} catch (Exception $e) {
 			die();
 		}
-		
 	}
 
 	public function showlist($sort='recommended'){
@@ -85,13 +70,11 @@ class Courses_Controller extends Template_Controller {
 		if(!in_array($sort, $arr_sort))
 			$sort = 'recommended';
 		$this->template->content = new View('templates/'.$this->site['config']['TEMPLATE'].'/courses/newlist');
-		
 		$this->db->where('member_uid',$this->sess_cus['id']);
 		$payment = $this->payment_model->get();
 		$arraypayment = array();
 		foreach($payment as $value){
 			$test = $this->test_model->get($value['courses_id']);
-			
 			if((isset($value['daytest'] ) && strtotime("-". $value['daytest'] ." day" ) <= $value['payment_date'])
 				||(isset($value['daytest']) && $value['daytest'] ==0))
 			{
@@ -141,10 +124,8 @@ class Courses_Controller extends Template_Controller {
 			if(!empty($slt_tags))
 				$this->db->where('tags_id like "%|'.$slt_tags.'|%"');
 		}
-
 		$this->db->where('status',1);
 		if($sort == 'recommended'){
-			//if($using_cookie == false)
 			$this->db->orderby('location','asc');
 			$this->db->orderby('id','desc');
 		}elseif($sort == 'newest'){
@@ -208,8 +189,6 @@ class Courses_Controller extends Template_Controller {
 			}
 			array_multisort($arr_location, SORT_ASC, SORT_STRING, $arr_id, SORT_DESC, $mr['mlist']);
 		}
-
-		//$this->show_arr($mr);
 		$list_tags = $this->db->get('tags')->result_array(false);
 		$this->template->content->mr              = $mr;
 		$this->template->content->list_tags       = $list_tags;
@@ -234,7 +213,6 @@ class Courses_Controller extends Template_Controller {
 				$arraypayment[] =  $value['test_uid'];
 			}
 		}
-		
 		if(!empty($arraypayment)){
 			$this->db->in('uid', $arraypayment);
 			$this->db->where('status',1);
@@ -245,7 +223,6 @@ class Courses_Controller extends Template_Controller {
 				else $per_page = $this->search['display']; 
 			}else
 				$per_page = $this->site['site_num_line2'];
-			
 			$this->pagination = new Pagination(array(
 				'base_url'       => 'test/showlist/search/',
 				'uri_segment'    => 'page',
@@ -255,11 +232,9 @@ class Courses_Controller extends Template_Controller {
 			));		
 			$this->where_sql();
 			$this->db->in('uid', $arraypayment);
-			
 			$this->db->where('status',1);
 			$mr['mlist'] = $this->test_model->get();
 			foreach($mr['mlist'] as $key=> $value){
-				
 				$this->db->where('test_uid',$value['uid']);
 				$this->db->where('member_uid',$this->sess_cus['id']);
 				$this->db->limit(1);
@@ -268,11 +243,9 @@ class Courses_Controller extends Template_Controller {
 				$mr['mlist'][$key]['daytest']= $payment[0]['daytest'];
 			}
 			foreach($mr['mlist'] as $key => $value){
-				
 				$this->db->where('test_uid',$mr['mlist'][$key]['uid']);
 				$category = $this->category_model->get();
 				$mr['mlist'][$key]['category'] = $category;
-				
 				$this->db->limit(1);
 				$this->db->where('member_uid',$this->sess_cus['id']);
 				$this->db->where('test_uid',$value['uid']);
@@ -283,9 +256,7 @@ class Courses_Controller extends Template_Controller {
 					$mr['mlist'][$key]['scoreparent'] = $testparent[0]['testing_score'];
 				}
 			}
-			
 		}
-		$this->show_arr($mr);
 		$this->template->content->mr = $mr;		
 	}
 	
@@ -311,17 +282,13 @@ class Courses_Controller extends Template_Controller {
 		    'items_per_page' => $per_page,
 		    'style'          => 'digg',
 		));		
-		
 		$mr['mlist'] = $payment;
-		
 		$view->mr = $mr;
 		$view->render(true);	
 		die();	
 	}
 	
-	
-	public function search()
-	{
+	public function search(){
 		if($this->session->get('sess_search')){			
 			$this->search = $this->session->get('sess_search');	
 		}
@@ -342,7 +309,6 @@ class Courses_Controller extends Template_Controller {
 		$this->db->where('courses_id',$id_courses);
 		$payment = $this->payment_model->get();
 		$insert = true;
-
 		foreach($payment as $value){
 			if(((isset($value['daytest'])?strtotime("-". $value['daytest'] ." day"):strtotime('now')) <= $value['payment_date']) || $value['daytest'] == 0){
 				$insert = false;
@@ -406,7 +372,6 @@ class Courses_Controller extends Template_Controller {
 				$m_course->save();
 			}
 			if(!empty($inserts)){
-				//$this->template->content->insert = 'You have paid successfully'; 
 				$this->session->set_flash('success_msg','You have paid successfully');
 			}
 		}
@@ -422,7 +387,6 @@ class Courses_Controller extends Template_Controller {
 		 * get data test
 		 */
 		$mr = $this->test_model->get($id_test);
-
 		/**
 		 * Get data 
 		 * 	+lesson
@@ -438,7 +402,6 @@ class Courses_Controller extends Template_Controller {
 			$this->db->where('id_member',$this->sess_cus['id']);
 			$this->db->where('id_course',$courses['id']);
 			$study = $this->study_model->get();
-			//$this->show_arr($study);
 			if(empty($study[0])){
 				$m_study              = ORM::factory('study_orm');
 				$m_study->id_member   = $this->sess_cus['id'];
@@ -449,33 +412,27 @@ class Courses_Controller extends Template_Controller {
 				$m_study->save();
 			}
 		}
-		
 		/**
 		 * get data category
 		 */
-
 		if(!empty($lesson['id_categories'])){
 			$this->db->where('category.uid',$lesson['id_categories']);
-
 		}
 		$this->db->where('test_uid',$id_test);
 		$this->db->where('category_percentage >=',0);
-		$mlist_cate = $this->category_model->get();
+		$mlist_cate      = $this->category_model->get();
 		$total_questions = 0;
-
 		if(!empty($mlist_cate)){
 			foreach ($mlist_cate as $key => $value) {
 				$total_questions += floor($mr['qty_question'] * $value['category_percentage'] / 100);
 			}
 			$mr['total_questions'] = $total_questions;
 		}
-
 		if(!empty($lesson['id_categories']) && !empty($mlist_cate[0]) && $mlist_cate[0]['category_percentage'] > 0){
 			$m_total =  floor($mr['qty_question'] * $mlist_cate[0]['category_percentage'] / 100);
 			$m_time  =  floor($mr['time_value'] * $mlist_cate[0]['category_percentage'] / 100);
 			$mr['m_total'] = $m_total;
 			$mr['m_time']  = $m_time;
-			
 		}
 		/**
 		 * data to view
@@ -536,9 +493,7 @@ class Courses_Controller extends Template_Controller {
 				$date1       = date_create(date('Y-m-d', $m_date));
 				$date2       = date_create(date('Y-m-d'));
 				$diff        = date_diff($date1,$date2);
-				
 				$mr['mlist'][$key]['days_left'] = (int)$diff->format("%a");
-				//$mr['mlist'][$key]['days_left']  = floor(abs(strtotime(date('m/d/Y',$mr['mlist'][$key]['payment_date']). ' + '.$mr['mlist'][$key]['daytest'].' day') - strtotime(date('m/d/Y')))/(60*60*24));
 			}
 		} 
 		$this->template->content->mr     = $mr;
@@ -558,7 +513,6 @@ class Courses_Controller extends Template_Controller {
 			$this->db->where('id_member',$this->sess_cus['id']);
 			$this->db->where('id_lesson',$id_lesson);
 			$study = $this->study_model->get();
-			//$this->show_arr($study);
 			if(empty($study[0])){
 				$m_study              = ORM::factory('study_orm');
 				$m_study->id_member   = $this->sess_cus['id'];
@@ -567,10 +521,8 @@ class Courses_Controller extends Template_Controller {
 				$m_study->lesson_pass = 'N';
 				$m_study->save();
 			}
-
 			$lesson['video_pass']  = !empty($study[0]['video_pass'])?$study[0]['video_pass']:'N';
 			$lesson['lesson_pass'] = !empty($study[0]['lesson_pass'])?$study[0]['lesson_pass']:'N';
-
 			$using_download = false;
 			if(!empty($lesson['attach_file'])){
 				require Kohana::find_file('views/aws','init');
@@ -580,17 +532,14 @@ class Courses_Controller extends Template_Controller {
 			}
 			//Get courses
 			$courses = $this->courses_model->get($lesson['id_courses']);
-
 			//Get Annotation text
 			$this->db->where('id_lesson',$lesson['id']);
 			$this->db->orderby('id','asc');
 			$lis_annotation = $this->lesson_annotation_model->get();
-
 			$this->template->content->courses        = $courses;
 			$this->template->content->lesson         = $lesson;
 			$this->template->content->using_download = $using_download;
 			$this->template->content->lis_annotation = $lis_annotation;
-
 		}else{
 			url::redirect(url::base().'courses');
 			die();
@@ -632,7 +581,6 @@ class Courses_Controller extends Template_Controller {
 			$this->db->where('lesson.id_courses',$id_courses);
 			$this->db->orderby('id','asc');
 			$list_lesson = $this->lesson_model->get();
-
 			if(!empty($list_lesson)){
 				foreach ($list_lesson as $index => $item_lesson) {
 					$this->db->where('id_member',$this->sess_cus['id']);
@@ -648,9 +596,8 @@ class Courses_Controller extends Template_Controller {
 				$list_certificate = $this->member_certificate_model->get();
 				$this->template->content->list_certificate = $list_certificate;
 				$this->template->content->courses_unlock   = !empty($list_certificate)?'yes':'no';
-
 			}else{
-				$this->template->content->courses_unlock     = 'no';
+				$this->template->content->courses_unlock = 'no';
 			}
 			$this->template->content->courses     = $courses;
 			$this->template->content->list_lesson = $list_lesson;
@@ -667,7 +614,6 @@ class Courses_Controller extends Template_Controller {
 			$this->db->where('lesson.id_courses',$id_courses);
 			$this->db->orderby('id','asc');
 			$list_lesson = $this->lesson_model->get();
-
 			if(!empty($list_lesson)){
 				foreach ($list_lesson as $index => $item_lesson) {
 					$this->db->where('id_member',$this->sess_cus['id']);
@@ -693,7 +639,6 @@ class Courses_Controller extends Template_Controller {
 				$list_certificate[$key]['item'] = $item_certificate;
 			}
 		}
-		//$this->show_arr($list_certificate);
 		$this->template->content->list_certificate = $list_certificate;
 	}
 
@@ -710,18 +655,15 @@ class Courses_Controller extends Template_Controller {
 
 	public function print_certificate($id){
 		$this->template = new View('templates/'.$this->site['config']['TEMPLATE'].'/courses/print_certificate');
-		
 		$id = base64_decode($id);
 		$certificate = $this->member_certificate_model->get($id);
 		if(!empty($certificate)){
 			$item_certificate = $this->certificate_model->get($certificate['certificate_id']);
 			$certificate['item'] = $item_certificate;
 		}
-		
 		$this->template->set(array( 
 			'certificate' => $certificate,
 		));
-
 		require Kohana::find_file('vendor/html2pdfv','html2pdf');
 		$html2pdf = new HTML2PDF('L','A5','en',array(0, 0, 0, 0));
 		$html2pdf->WriteHTML($this->template,false);
@@ -733,7 +675,7 @@ class Courses_Controller extends Template_Controller {
 		$this->session->delete('sess_save');
 		if(isset($_POST['txt_finish']) && $_POST['txt_finish'] == 1){
 			$id_courses = $this->input->post('txt_id_courses');
-			$courses = $this->courses_model->get($this->input->post('txt_id_courses'));
+			$courses    = $this->courses_model->get($this->input->post('txt_id_courses'));
 			if(!empty($courses['type']) && $courses['type'] == 1){
 				url::redirect(url::base().'courses');
 		  		die();
@@ -749,7 +691,6 @@ class Courses_Controller extends Template_Controller {
 						$this->db->where('certificate_id',$courses['id_certificate']);
 						$this->db->orderby('id','desc');
 						$certificate = $this->member_certificate_model->get();
-
 						if(!empty($certificate[0]) && $certificate[0]['new'] == 1){
 							/**
 							 * add certificate
@@ -781,11 +722,10 @@ class Courses_Controller extends Template_Controller {
 		$id_test    = $this->input->post('sel_test');
 		$id_courses = $this->input->post('txt_id_courses');
 		$id_lesson  = $this->input->post('txt_id_lesson');
-
-		$mr      = $this->test_model->get($id_test);
-		$lesson  = $this->lesson_model->get($id_lesson);
-		$courses = $this->courses_model->get($id_courses);
-		/////
+		$id_cate    = $this->input->post('txt_id_cate');
+		$mr         = $this->test_model->get($id_test);
+		$lesson     = $this->lesson_model->get($id_lesson);
+		$courses    = $this->courses_model->get($id_courses);
 		if(!empty($lesson['id_categories'])){
 			$this->db->where('category.uid',$lesson['id_categories']);
 		}
@@ -794,74 +734,76 @@ class Courses_Controller extends Template_Controller {
 		$this->db->where('category_percentage >=',0);
 		$mist_cate = $this->category_model->get();
 		if(!empty($mist_cate)){
-			for($j=0; $j<count($mist_cate); $j++)
-			{ 
+			for($j=0; $j<count($mist_cate); $j++){ 
 				$this->db->limit(($mist_cate[$j]['category_percentage'] * $mr['qty_question'] / 100));
 				$this->db->where('category_uid',$mist_cate[$j]['uid']);
 				$mlist = $this->questionnaires_model->randdom();
 				$mist_cate[$j]['questionnaires'] = $mlist;
-				for($i=0;$i<count($mist_cate[$j]['questionnaires']);$i++)
-				{
+				for($i=0;$i<count($mist_cate[$j]['questionnaires']);$i++){
 					$rand = $this->answer_model->get_questionnaires($mlist[$i]['uid']);
-
 					if(!empty($rand)){
-
 						$rand_0=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
 						$mist_cate[$j]['questionnaires'][$i]['answer'] = array_merge($rand,$rand_0);
-
 					}else{
 						$mist_cate[$j]['questionnaires'][$i]['answer'] = $this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
 					}
-					
 				}
-	
 			}
 		}else{
-				$mist_cate = array();
-				$this->db->limit($mr['qty_question']);
-				$this->db->where('test_uid',$_POST['sel_test']);
-				$mlist = $this->questionnaires_model->randdom();
-				$mist_cate[0]['questionnaires'] = $mlist;
-				for($i=0;$i<count($mist_cate[0]['questionnaires']);$i++)
-				{
-					$rand=$this->answer_model->get_questionnaires($mlist[$i]['uid']);
-					if(!empty($rand)){
-						
-						$rand_0=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
-						$mist_cate[0]['questionnaires'][$i]['answer']=array_merge($rand,$rand_0);
-
-					}else{
-
-						$mist_cate[0]['questionnaires'][$i]['answer']=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
-
-					}
+			$mist_cate = array();
+			$this->db->limit($mr['qty_question']);
+			$this->db->where('test_uid',$_POST['sel_test']);
+			$mlist = $this->questionnaires_model->randdom();
+			$mist_cate[0]['questionnaires'] = $mlist;
+			for($i=0;$i<count($mist_cate[0]['questionnaires']);$i++){
+				$rand=$this->answer_model->get_questionnaires($mlist[$i]['uid']);
+				if(!empty($rand)){
+					$rand_0=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
+					$mist_cate[0]['questionnaires'][$i]['answer']=array_merge($rand,$rand_0);
+				}else{
+					$mist_cate[0]['questionnaires'][$i]['answer']=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
 				}
+			}
 		}
 		
+		if(!empty($id_cate)){
+			// lay so luong hien thi cau hoi
+			if(!empty($courses) && $courses['type'] == 1){
+				if(!empty($mist_cate)){
+					$qty_question = 0;
+					foreach ($mist_cate as $sl => $item_cate) {
+						if($item_cate['uid'] == $id_cate){
+							$mist_cate[$sl]['display'] = 'yes';
+							$qty_question += count($item_cate['questionnaires']);
+						}
+						else
+							$mist_cate[$sl]['display'] = 'no';
+					}
+				}
+			}
+		}
 		if(!empty($lesson['id_categories']) && !empty($mist_cate[0]) && $mist_cate[0]['category_percentage'] > 0){
 			$m_total =  floor($mr['qty_question'] * $mist_cate[0]['category_percentage'] / 100);
 			$m_time  =  floor($mr['time_value'] * $mist_cate[0]['category_percentage'] / 100);
 			/* Cap nhat lai so cau hoi vao thoi gian */
-			//$mr['m_total'] = $m_total;
-			//$mr['m_time']  = $m_time;
 			$mr['qty_question'] = $m_total;
 			$mr['time_value']   = $m_time;
 		}else{
 			$total_questions = 0;
-			if(!empty($mist_cate)){
-				foreach ($mist_cate as $key => $value) {
-					$total_questions += floor($mr['qty_question'] * $value['category_percentage'] / 100);
+			if(!empty($id_cate)){
+				$mr['qty_question'] = $qty_question;
+			}else{
+				if(!empty($mist_cate)){
+					foreach ($mist_cate as $key => $value) {
+						$total_questions += floor($mr['qty_question'] * $value['category_percentage'] / 100);
+					}
+					$mr['qty_question'] = $total_questions;
 				}
-				$mr['qty_question'] = $total_questions;
 			}
 		}
-
-
-
 		$mr['typetest'] = 1;	
 		$this->db->where('status',1);
 		$mtest = $this->test_model->get();
-
 		$this->template->content->mr      = $mr;
 		$this->template->content->mlist   = $mist_cate;
 		$this->template->content->mtest   = $mtest ;
@@ -870,44 +812,38 @@ class Courses_Controller extends Template_Controller {
 	}
 	
 	public function getTestCategory($testing_code , $test_uid){
-			$view = new View('templates/'.$this->site['config']['TEMPLATE'].'/test/dialog');
-			
-		    $this->db->where('test_uid',$test_uid);
-			$this->db->where('category_percentage >',0);
-			$this->db->orderby('parent_id','ASC');
-			$this->db->orderby('category','ASC');
-			$listcategory = $this->category_model->get();
-			$mr = array();  
-			foreach($listcategory as $value){
-					$parent = $this->category_model->get($value['parent_id']);
-					$this->db->where('category_uid',$value['uid']);
-					$qtyques = $this->questionnaires_model->get();
-					if(!empty($qtyques)){
-						if(isset($parent['category']) && $parent['category'] !='')	
-							$olist[$value['uid']] = $parent['category'].'-'.$value['category'];
-						else
-							$olist[$value['uid']] = $value['category'];
-					}
+		$view = new View('templates/'.$this->site['config']['TEMPLATE'].'/test/dialog');
+	    $this->db->where('test_uid',$test_uid);
+		$this->db->where('category_percentage >',0);
+		$this->db->orderby('parent_id','ASC');
+		$this->db->orderby('category','ASC');
+		$listcategory = $this->category_model->get();
+		$mr = array();  
+		foreach($listcategory as $value){
+			$parent = $this->category_model->get($value['parent_id']);
+			$this->db->where('category_uid',$value['uid']);
+			$qtyques = $this->questionnaires_model->get();
+			if(!empty($qtyques)){
+				if(isset($parent['category']) && $parent['category'] !='')	
+					$olist[$value['uid']] = $parent['category'].'-'.$value['category'];
+				else
+					$olist[$value['uid']] = $value['category'];
 			}
-			$mr['testing_code'] = $testing_code;
-			$mr['test_uid'] = $test_uid;
-			if(isset($mr['testing_code'])){
-				$this->db->where('testing_code',$mr['testing_code']);
-				$testparent = $this->testing_model->get();
-				$mr['parent_code']  = $testparent[0]['parent_code'];
-			}
-			$mr['olist'] = $olist;
-			$view->mr = $mr;
-			
-			$view->render(true);
-			
-			die();
-			
+		}
+		$mr['testing_code'] = $testing_code;
+		$mr['test_uid'] = $test_uid;
+		if(isset($mr['testing_code'])){
+			$this->db->where('testing_code',$mr['testing_code']);
+			$testparent = $this->testing_model->get();
+			$mr['parent_code']  = $testparent[0]['parent_code'];
+		}
+		$mr['olist'] = $olist;
+		$view->mr = $mr;
+		$view->render(true);
+		die();
 	}
 	
-	public function testingcategory()
-	{
-			
+	public function testingcategory(){
 		if(!isset($_POST['hd_test'])){
 			url::redirect(url::base().'test');
 		    die();
@@ -923,69 +859,53 @@ class Courses_Controller extends Template_Controller {
 		}else{
 			$mr['test_title']='Please check full !!';
 		}
-
 		$qty_question = 0;
-		for($j=0;$j<count($mist_cate);$j++)
-		{ 
+		for($j=0;$j<count($mist_cate);$j++){ 
 		    $this->db->limit(($mist_cate[$j]['category_percentage']*$mr['qty_question'])/100);
 			$this->db->where('category_uid',$mist_cate[$j]['uid']);
 			$mlist = $this->questionnaires_model->randdom();
 			$mist_cate[$j]['questionnaires'] = $mlist;
-			for($i=0;$i<count($mist_cate[$j]['questionnaires']);$i++)
-		    {
-		   		// $mist_cate[$j]['questionnaires'][$i]['answer'] 
-		   		 $rand=$this->answer_model->get_questionnaires($mlist[$i]['uid']);
-					if(!empty($rand)){
-
-						$rand_0=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
-						$mist_cate[$j]['questionnaires'][$i]['answer']=array_merge($rand,$rand_0);
-
-					}else{
-
-						$mist_cate[$j]['questionnaires'][$i]['answer']=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
-
-					}
+			for($i=0;$i<count($mist_cate[$j]['questionnaires']);$i++){
+		   		$rand=$this->answer_model->get_questionnaires($mlist[$i]['uid']);
+				if(!empty($rand)){
+					$rand_0=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
+					$mist_cate[$j]['questionnaires'][$i]['answer']=array_merge($rand,$rand_0);
+				}else{
+					$mist_cate[$j]['questionnaires'][$i]['answer']=$this->answer_model->get_questionnaires_zero($mlist[$i]['uid']);
+				}
 				$qty_question++;
 		    }
 		}
-		
 		$mr['typetest'] = 3;
 		$mr['qty_question'] = $qty_question;
 		$mr['parent_id'] = $_POST['parent_id'];
-		
 		$this->db->where('status',1);
 		$mtest = $this->test_model->get();
-		$this->template->content->mr = $mr;
+		$this->template->content->mr    = $mr;
 		$this->template->content->mlist = $mist_cate;
-		$this->template->content->mtest =$mtest ;
+		$this->template->content->mtest = $mtest ;
 	}
 	
-	public function getChartByCategory($cateuid,$member_uid,$id_lesson='',$id_courses='')
-	{
+	public function getChartByCategory($cateuid,$member_uid,$id_lesson='',$id_courses=''){
 		$courses = $this->courses_model->get($id_courses);
-
 		$this->db->where('category',$cateuid);
 		$this->db->where('member_uid',$member_uid);
-
 		if(!empty($courses) && $courses['type'] == 0){
 			$this->db->where('id_lesson',$id_lesson);
 		}elseif(!empty($courses) && $courses['type'] == 1){
 			$this->db->where('id_course',$courses['id']);
 		}
-
 		$list = $this->testing_category_model->get();
-		//$this->show_arr($list);
 		foreach($list as $key=> $value){
 			$name = $this->category_model->get($value['category']);
 			$list[$key]['name']     = $name['category'];
 			$list[$key]['str_date'] = $this->format_int_date($list[$key]['testing_date'],'m/d/Y H:i');
 		}
-		
 		echo( json_encode($list));
 		die();
 	}
-	public function getChartCategory($testing_code,$member_uid)
-	{
+
+	public function getChartCategory($testing_code,$member_uid){
 		$this->db->where('testing_code',$testing_code);
 		$this->db->where('member_uid',$member_uid);
 		$list = $this->testing_category_model->get();
@@ -996,14 +916,11 @@ class Courses_Controller extends Template_Controller {
 				$list[$key]['name'] =  $parent['category'].'-'.$category['category'];
 			}
 		}
-		
 		echo( json_encode($list));
 		die();
 	}
 	
-	public function getChartTest($test_uid,$member_uid,$id_lesson='',$courses='')
-	{
-
+	public function getChartTest($test_uid,$member_uid,$id_lesson='',$courses=''){
 		$this->db->where('test_uid',$test_uid);
 		if(!empty($courses) && $courses['type'] == 0){
 			$this->db->where('id_lesson',$id_lesson);
@@ -1011,8 +928,6 @@ class Courses_Controller extends Template_Controller {
 			$this->db->where('id_course',$courses['id']);
 		}
 		$chartlist = $this->testing_model->getTestingByChart('member_uid',$member_uid);
-		//echo $this->db->last_query();
-		//die();
 		foreach($chartlist as $key => $value){
 			$chartlist[$key]['test']  = $this->test_model->get($value['test_uid']);
 		}
@@ -1124,18 +1039,15 @@ class Courses_Controller extends Template_Controller {
 	public function resulttest(){
 		$this->template->content = new View('templates/'.$this->site['config']['TEMPLATE'].'/courses/resulttesting');
 		if($_POST && !($this->session->get('sess_save'))){
-			$id_courses = $this->input->post('txt_id_courses');
-			$id_lesson  = $this->input->post('txt_id_lesson');
-			
-			$lesson     = $this->lesson_model->get($id_lesson);
-			$courses    = $this->courses_model->get($id_courses);
-
+			$id_courses      = $this->input->post('txt_id_courses');
+			$id_lesson       = $this->input->post('txt_id_lesson');
+			$lesson          = $this->lesson_model->get($id_lesson);
+			$courses         = $this->courses_model->get($id_courses);
 			$pass            = 0;
 			$fail            = 0;
 			$arraycategory   = array();
 			$arraycategory[] = null ;
 			$categorylimit   = $_POST['category'];
-
 			for($i = 0; $i < count($_POST['hd_question']); $i++){
 			    if(isset($_POST['radio'.$_POST['hd_question'][$i]]) && $_POST['radio'.$_POST['hd_question'][$i]] == 1){
 					$arr_uid = explode('|',$_POST['radio'.$_POST['hd_question'][$i]]);
@@ -1154,7 +1066,6 @@ class Courses_Controller extends Template_Controller {
 					$fail++;
 				}
 			}
-
 			if($_POST['hd_type']==0)
 				$mr['timeduration'] = $_POST['hd_timeduration'];
 			else{
@@ -1166,7 +1077,6 @@ class Courses_Controller extends Template_Controller {
 					$mr['timeduration'] = gmdate("H:i:s",($time*60)-$time_redmain);
 				}
 			}
-
 			$percentcategory = array();
 			foreach($categorylimit as $value){
 				$temp = explode('|',$value);
@@ -1178,16 +1088,13 @@ class Courses_Controller extends Template_Controller {
 						$percentcategory[$temp[0]] = array(0,$temp[1]);
 				} 
 			}
-			
 			$questionnaires = array();
 			foreach($_POST['hd_question'] as $value){
 				$questionnaires = $this->questionnaires_model->get($_POST['hd_question']);
 			}
-
 			$mlist     = array();
 			$chartlist = array();
 			$olist     = array();
-
 			foreach($percentcategory as $key => $value){
 			   	if($value[1] != 0){
 					$category = $this->category_model->get($key);
@@ -1198,7 +1105,6 @@ class Courses_Controller extends Template_Controller {
 							$this->db->where('questionnaires_uid',$val['uid']);
 							$this->db->where('type',1);
 							$answer = $this->answer_model->get();
-							
 							$questionnaires[$key]['answer'] = isset($answer[0]['answer'])?$answer[0]['answer']:'';
 							$questionnaires[$key]['images'] = isset($answer[0]['images'])?$answer[0]['images']:'';
 						 	if($val['category_uid'] == $category['uid']){
@@ -1227,12 +1133,32 @@ class Courses_Controller extends Template_Controller {
 			}elseif(!empty($courses) && $courses['type'] == 1){
 				$this->db->where('id_course',$courses['id']);
 			}
-
-			$stt_no = $this->testing_model->get_code($this->format_str_date(date('m/d/Y'),$this->site['site_short_date']));
+			$stt_no       = $this->testing_model->get_code($this->format_str_date(date('m/d/Y'),$this->site['site_short_date']));
 			$testing_code = date('ymd').'-'.$stt_no;
-			
 			//get number question of test
 			$test_main = $this->test_model->get($_POST['hd_test']);
+			if(!empty($courses) && $courses['type'] == 1){
+				$this->db->where('test_uid',$test_main['uid']);
+				$this->db->where('category_percentage >=',0);
+				$m_all_categoty = $this->category_model->get();
+				if(!empty($m_all_categoty)){
+					if(!empty($mlist)){
+						foreach ($mlist as $sl_item => $item_mlist) {
+							foreach ($m_all_categoty as $sl_all_cate => $item_all_cate) {
+								if($item_mlist[2] == $item_all_cate['uid']){
+									unset($m_all_categoty[$sl_all_cate]);
+									break;
+								}
+							}
+						}
+					}
+				}
+				if(!empty($m_all_categoty)){
+					foreach ($m_all_categoty as $sl_all_cate => $item_all_cate) {
+						$m_all_categoty[$sl_all_cate]['sl'] = floor($test_main['qty_question'] * $item_all_cate['category_percentage'] / 100);
+					}
+				}
+			}
 			if(!empty($lesson['id_categories'])){
 				$m_cate = $this->category_model->get($lesson['id_categories']);
 				$number_question =  floor($test_main['qty_question'] * $m_cate['category_percentage'] / 100);
@@ -1241,29 +1167,23 @@ class Courses_Controller extends Template_Controller {
 				$this->db->where('category_percentage >=',0);
 				$mlist_cate = $this->category_model->get();
 				$total_questions = 0;
-
 				if(!empty($mlist_cate)){
 					foreach ($mlist_cate as $key => $value) {
 						$total_questions += floor($test_main['qty_question'] * $value['category_percentage'] / 100);
 					}
 				}
-
 				$number_question = !empty($total_questions)?$total_questions:count($_POST['hd_question']);
 			}
 			$mr['fail']      = round(($fail*100)/$number_question,1);
-			// '<br>';
 			$mr['pass']      = round(($pass*100)/$number_question,1);
-
 			if(isset($_POST['parent_id']) && $_POST['parent_id']!='')
 				$mr['parent_id'] = $_POST['parent_id'];
 			else
 			  	$mr['parent_id'] = $testing_code;
-			
 			/**
 			  * Save data test
 			  */ 
 			$this->save($mr['timeduration'],$mr['pass'],$chartlist,$testing_code,$mr['parent_id'],$_POST['typetest']);
-			
 			$this->db->limit(1);
 			$this->db->where('testing_code',$testing_code);
 			$this->db->where('member_uid',$this->sess_cus['id']);
@@ -1272,7 +1192,6 @@ class Courses_Controller extends Template_Controller {
 			}elseif(!empty($courses) && $courses['type'] == 1){
 				$this->db->where('id_course',$courses['id']);
 			}
-
 			$mr['last_test'] = $this->testing_model->get(); 
 			$scoreparent = 0;
 			if(isset($mr['parent_id'])){
@@ -1312,8 +1231,6 @@ class Courses_Controller extends Template_Controller {
 				 * get data test
 				 */
 				$data_test = $this->test_model->get($_POST['hd_test']);
-				// $this->show_arr($data_test);
-				// die();
 				if(!empty($data_test)){
 					$m_scores_pass = !empty($data_test['pass_score'])?$data_test['pass_score']:0;
 					if($scoreparent >= $m_scores_pass){
@@ -1327,22 +1244,20 @@ class Courses_Controller extends Template_Controller {
 						}
 					}
 				}
-				
 			}
 			$mr['last_test'][0]['test'] = $this->test_model->get($mr['last_test'][0]['test_uid']);
-			$this->session->set('sess_save',$testing_code);  
+			$this->session->set('sess_save',$testing_code);
 		    $this->db->where('test_uid',$mr['last_test'][0]['test_uid']);
 		    $this->db->where('category_percentage >',0);
 		    $this->db->orderby('parent_id','ASC');
-		    $this->db->orderby('category','ASC');	
+		    $this->db->orderby('category','ASC');
 			$listcategory = $this->category_model->get();
 			foreach($listcategory as $value){
-				//$category = $this->category_model->get($value['uid']);
 				$parent = $this->category_model->get($value['parent_id']);
 				$this->db->where('category_uid',$value['uid']);
 				$qtyques = $this->questionnaires_model->get();
 				if(!empty($qtyques)){
-					if(isset($parent['category']) && $parent['category'] !='')	
+					if(isset($parent['category']) && $parent['category'] !='')
 						$olist[$value['uid']] = $parent['category'].'-'.$value['category'];
 					else
 						$olist[$value['uid']] = $value['category'];
@@ -1376,7 +1291,6 @@ class Courses_Controller extends Template_Controller {
 								$arraypayment[] =  $value['uid'];
 							}
 						}
-						
 						if(empty($certificate[0])){
 							/**
 							 * add certificate
@@ -1405,7 +1319,6 @@ class Courses_Controller extends Template_Controller {
 					}
 				}
 			}
-
 			//check study lesson
 			$this->db->where('id_member',$this->sess_cus['id']);
 			if(!empty($courses) && $courses['type'] == 0){
@@ -1413,17 +1326,15 @@ class Courses_Controller extends Template_Controller {
 			}elseif(!empty($courses) && $courses['type'] == 1){
 				$this->db->where('id_course',$courses['id']);
 			}
-			$study = $this->study_model->get();
-
-			$chartlist = $this->getChartTest($mr['idtest'],$this->sess_cus['id'],$id_lesson,$courses);
-
-			$this->template->content->chartlist   = $chartlist;
-			$this->template->content->mr          = $mr;
-			$this->template->content->scoreparent = $scoreparent;
-			
-			$this->template->content->lesson      = $lesson;
-			$this->template->content->courses     = $courses;
-			$this->template->content->study       = $study;
+			$study                                   = $this->study_model->get();
+			$chartlist                               = $this->getChartTest($mr['idtest'],$this->sess_cus['id'],$id_lesson,$courses);
+			$this->template->content->chartlist      = $chartlist;
+			$this->template->content->mr             = $mr;
+			$this->template->content->scoreparent    = $scoreparent;
+			$this->template->content->lesson         = $lesson;
+			$this->template->content->courses        = $courses;
+			$this->template->content->study          = $study;
+			$this->template->content->m_all_categoty = isset($m_all_categoty)?$m_all_categoty:'';
 		}
 		else
 		  url::redirect(url::base());
@@ -1467,7 +1378,6 @@ class Courses_Controller extends Template_Controller {
 		}else{
 			$score = 0;
 		}
-		//die();
 		if(!empty($courses) && $courses['type'] == 0){
 			$testing_date = $this->format_str_date(date('m/d/Y'),$this->site['site_short_date'],'/',date('H'),date('i'),0);
 			$record = array(
@@ -1483,7 +1393,6 @@ class Courses_Controller extends Template_Controller {
 				'duration'      => $this->seconds($duration), 
 		    );
 		    $this->db->insert('testing',$record);
-
 		    /**
 			 * save testing detail
 			 */
@@ -1552,18 +1461,15 @@ class Courses_Controller extends Template_Controller {
 	
 	public function savedetail($testing_code,$id_lesson,$id_course,$type=0){
 		for($i=0;$i<count($_POST['hd_question']);$i++){
-			if(isset($_POST['radio'.$_POST['hd_question'][$i]]) && !empty($_POST['radio'.$_POST['hd_question'][$i]]))
-			 {
+			if(isset($_POST['radio'.$_POST['hd_question'][$i]]) && !empty($_POST['radio'.$_POST['hd_question'][$i]])){
 				$arr_uid = explode('|',$_POST['radio'.$_POST['hd_question'][$i]]);
 				if(isset($arr_uid[0]) && $arr_uid[0]==1)
 				$result=1;
 				else $result=0;
-			 	
 			}else{
 				$result     = 0;
 				$arr_uid[1] = 0;
 			}
-			
 			if($type == 0){
 				$this->db->insert(
 					'testing_detail',
@@ -1589,50 +1495,38 @@ class Courses_Controller extends Template_Controller {
 				    )
 				);
 			}  
-			
 		}
 	}
 
 	private function send_email_company_testing($record){
 		require_once Kohana::find_file('views/mailgun','init');
-
 		$html_content = $this->data_template_model->get_value('EMAIL_TESTING_COMPANY');
 		if(isset($this->sess_cus['id'])){
 			 $this->member_model = new Member_Model(); 
 			 $member =  $this->member_model->get($this->sess_cus['id']);
 			 if(!empty($member) && strlen(trim($member['company_contact_email'])) > 0){
-						
-				 $mailcompany = $member['company_contact_email'];	
-				 
-				 
-				 if(strlen(trim($member['company_contact_name']))>0){
-				 		$company = $member['company_contact_name'];	
-				 }
-				 elseif(strlen(trim($member['company_name'])) > 0){
-							$company = $member['company_name'];	
-					 }
-					 else{
-							$company = $mailcompany;	
-					 }	
-				 	
-				 if(strlen(trim($member['member_fname']))>0){
-				 		$name = $member['member_fname'].' '.$member['member_lname'];
-				 }else {
-						$name = $member['member_email'];
-				 }
-				 
+				$mailcompany = $member['company_contact_email'];	
+				if(strlen(trim($member['company_contact_name']))>0){
+				 	$company = $member['company_contact_name'];	
+				}elseif(strlen(trim($member['company_name'])) > 0){
+					$company = $member['company_name'];	
+				}else{
+					$company = $mailcompany;	
+				}		
+				if(strlen(trim($member['member_fname']))>0){
+				 	$name = $member['member_fname'].' '.$member['member_lname'];
+				}else {
+					$name = $member['member_email'];
+				}
 				$html_content = str_replace('#company#',$company,$html_content);	
-				
 				$score = 0;
 				if($record['testing_type'] == 1){
 					$score = $record['parent_score'];
 				}else{
 					$score = $record['testing_score'];
 				}
-
-				//if(isset($record['testing_score']) && !empty($record['testing_score']))	
 				$test =  $this->test_model->get($record['test_uid']);
-					$html_content = str_replace('#test#',isset($test['test_title'])?$test['test_title']:'',$html_content);
+				$html_content = str_replace('#test#',isset($test['test_title'])?$test['test_title']:'',$html_content);
 				$html_content = str_replace('#date#',  $this->format_int_date($record['testing_date'],$this->site['site_short_date']),$html_content);
 				$html_content = str_replace('#name#',$name,$html_content);
 				$html_content = str_replace('#email#',$member['member_email'],$html_content);
@@ -1640,7 +1534,6 @@ class Courses_Controller extends Template_Controller {
 				$html_content = str_replace('#score#',$score,$html_content);
 			    $html_content = str_replace('#duration#',gmdate("H:i:s",$record['duration']),$html_content);
 				$html_content = str_replace('#site#',$this->site['site_name'],$html_content);
-
 				$result_send = $mailgun->sendMessage(MAILGUN_DOMAIN,
 					array(
 						'from'       => MAIL_FROM,
@@ -1664,32 +1557,23 @@ class Courses_Controller extends Template_Controller {
 		if(isset($this->sess_cus['id'])){
 			 $this->member_model = new Member_Model(); 
 			 $member =  $this->member_model->get($this->sess_cus['id']);
-			 if(!empty($member) && strlen(trim($member['company_contact_email'])) > 0){
-						
-				 $mailcompany = $member['company_contact_email'];	
-				 
-				 
-				 if(strlen(trim($member['company_contact_name']))>0){
-				 		$company = $member['company_contact_name'];	
-				 }
-				 elseif(strlen(trim($member['company_name'])) > 0){
-							$company = $member['company_name'];	
-					 }
-					 else{
-							$company = $mailcompany;	
-					 }	
-				 	
-				 if(strlen(trim($member['member_fname']))>0){
-				 		$name = $member['member_fname'].' '.$member['member_lname'];
-				 }else {
-						$name = $member['member_email'];
-				 }
-				 
+			 if(!empty($member) && strlen(trim($member['company_contact_email'])) > 0){	
+				$mailcompany = $member['company_contact_email'];	
+				if(strlen(trim($member['company_contact_name']))>0){
+				 	$company = $member['company_contact_name'];	
+				}elseif(strlen(trim($member['company_name'])) > 0){
+					$company = $member['company_name'];	
+				}else{
+					$company = $mailcompany;	
+				}	
+				if(strlen(trim($member['member_fname']))>0){
+					$name = $member['member_fname'].' '.$member['member_lname'];
+				}else {
+					$name = $member['member_email'];
+				}
 				$html_content = str_replace('#company#',$company,$html_content);	
-				
-				//if(isset($record['testing_score']) && !empty($record['testing_score']))	
 				$test =  $this->test_model->get($record['test_uid']);
-					$html_content = str_replace('#test#',isset($test['test_title'])?$test['test_title']:'',$html_content);
+				$html_content = str_replace('#test#',isset($test['test_title'])?$test['test_title']:'',$html_content);
 				$html_content = str_replace('#date#',  $this->format_int_date($record['testing_date'],$this->site['site_short_date']),$html_content);
 				$html_content = str_replace('#name#',$name,$html_content);
 				$html_content = str_replace('#email#',$member['member_email'],$html_content);
@@ -1933,45 +1817,34 @@ class Courses_Controller extends Template_Controller {
 		}
 	}
 	
-	private function send_email($record)
-    {
+	private function send_email($record){
     	//Use connect() method to load Swiftmailer
 		$swift = email::connect();
-		 
 		//From, subject
 		$from = $this->site['site_email'];
 		$subject = 'Testing '.$this->site['site_name'];
-		
 		//HTML message
 		$html_content = $this->data_template_model->get_value('EMAIL_TESTING');
 		//Replate content
-		     if(isset($this->sess_cus['name']) && !empty($this->sess_cus['name']))	
-			 $name = $this->sess_cus['name'];
-			 else $name = $this->sess_cus['email'];
-			 
+		if(isset($this->sess_cus['name']) && !empty($this->sess_cus['name']))	
+			$name = $this->sess_cus['name'];
+		else $name = $this->sess_cus['email'];
 		$html_content = str_replace('#name#',$name,$html_content);	
-		
 		$test =  $this->test_model->get($record['test_uid']);
-			$html_content = str_replace('#test#',$test['test_title'],$html_content);
+		$html_content = str_replace('#test#',$test['test_title'],$html_content);
 		$html_content = str_replace('#date#', $this->format_int_date($record['testing_date'],$this->site['site_short_date']),$html_content);
 		$html_content = str_replace('#score#',$record['testing_score'],$html_content);
 		$html_content = str_replace('#duration#',gmdate("H:i:s",$record['duration']),$html_content);
 		$html_content = str_replace('#code#',$record['testing_code'],$html_content);			
 		$html_content = str_replace('#site#',$this->site['site_name'],$html_content);		
-
 		//Build recipient lists
 		$recipients = new Swift_RecipientList;
 		$recipients->addTo($this->sess_cus['email']);
 		//$recipients->addTo($this->site['site_email']);
-		 
 		//Build the HTML message
 		$message = new Swift_Message($subject, $html_content, "text/html");
-
-	
 		if($swift->send($message, $recipients, $from)){
-		
 		} else {
-			
 		}	
 		// Disconnect
 		$swift->disconnect();

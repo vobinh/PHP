@@ -212,6 +212,7 @@
             <input type="hidden" name="txt_id_courses" id="txt_id_courses" value="<?php echo isset($courses['id'])?$courses['id']:"" ?>">
             <input type="hidden" name="txt_id_lesson" id="txt_id_lesson" value="<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>">
             <input type="hidden" name="txt_finish" id="txt_finish" value="">
+            <input type="hidden" name="txt_id_cate" id="txt_id_cate" value="">
             <?php 
               if(!empty($courses) && $courses['type'] == 0){
                 if((!empty($study[0]['lesson_pass']) && $study[0]['lesson_pass'] == 'Y') ||$scoreparent >= $lesson['percent_test_pass']) {?> 
@@ -412,7 +413,7 @@
                       categories:[
                         <?php if(!empty($chartlist) && $chartlist!=false){foreach($chartlist as $id => $list){ ?>
                           '<?php
-                            echo $this->format_int_date($list["testing_date"],"d/m/y H:i");
+                            echo $this->format_int_date($list["testing_date"],"y/m/d H:i");
                           ?>',
                         <?php }}?>    
                       ]
@@ -477,7 +478,7 @@
                       if(!empty($chartlist) && $chartlist!=false){
                         foreach($arraytest as $value){?>
                       {
-                        name: 'Only Missing',
+                        name: 'Retake',
                         color: '#ADFF2F',
                         data: [
                           <?php
@@ -580,13 +581,26 @@
               <div class="table-responsive">
                   <table class="table table-striped table-condensed main_data_13" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 0;">
                   <?php
+                    if(!empty($m_all_categoty)){
+                      foreach ($m_all_categoty as $sl_all_cate => $item_all_cate) { ?>
+                        <tr>
+                          <td align="left">
+                            <?php echo $item_all_cate['category']; ?>: <span style="color:red">100,00%</span><br />
+                            ( total <?php echo $item_all_cate['sl'];?> - answer : <?php echo $item_all_cate['sl'];;?> )
+                          </td>
+                          <td width="25%" align="center" style="vertical-align: middle;text-align: right;">
+                              <button type="button" class="btn" onclick="fn_cate(<?php echo $item_all_cate['uid']?>)">Whole Category</button>       
+                          </td>
+                        </tr>
+                    <?php }}
                     foreach($mr['mlist'] as $key => $value){ ?>
                       <tr>
                         <td align="left">
                           <?php echo $key ?>: <span style="color:red"><?php echo  ($value[1] != 0)? number_format(($value[0]*100)/$value[1], 2, ',', ' '):''; ?>% </span><br />
                           ( total <?php echo $value[1]?> - answer : <?php echo $value[0];?> )
                         </td>
-                        <td width="15%" align="center" style="vertical-align: middle;">
+                        <td width="25%" align="center" style="vertical-align: middle;text-align: right;">
+                          <button type="button" class="btn" onclick="fn_cate(<?php echo $value[2]?>)">Whole Category</button>
                           <?php if((($value[0]*100)/$value[1]) != 100) {?>
                             <button type="button" class="btn" onclick="fn_test_cate(<?php echo $value[2]?>)">Only Missing</button>
                           <?php }?>       
@@ -645,6 +659,10 @@
   function fn_test_cate(id){
     $('#txt_hd_cate_id').val(id);
     $('#frmcategory').submit();
+  }
+  function fn_cate(id){
+    $('#txt_id_cate').val(id);
+    $('#testagain').submit();
   }
 </script>
  

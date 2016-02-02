@@ -214,7 +214,7 @@ $().ready(function(){
             if(!empty($chartlist) && $chartlist!=false){
               foreach($arraytest as $value){?>
             {
-              name: 'only missing',
+              name: 'Retake',
               color: '#ADFF2F',
               data: [
                 <?php

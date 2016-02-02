@@ -81,7 +81,7 @@
 <?php //} ?>
 <div class="col-ms-12 col-md-12">
 	<div id='notice' style="border: 1px solid rgb(238, 153, 137);background-color: rgb(248, 158, 75);float:left; margin-left: 100px; padding: 5px;position: fixed;font-size: 23px;color: rgb(255, 255, 255);display: block;width: auto;min-width:175px;z-index:1;top:102px;font-weight: bold;text-align: center;" >
-	    Waiting...
+	    Loading
 	</div>
 
 	<div class="flip-counter clock" style="">
