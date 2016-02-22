@@ -212,7 +212,8 @@
             <input type="hidden" name="txt_id_courses" id="txt_id_courses" value="<?php echo isset($courses['id'])?$courses['id']:"" ?>">
             <input type="hidden" name="txt_id_lesson" id="txt_id_lesson" value="<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>">
             <input type="hidden" name="txt_finish" id="txt_finish" value="">
-            <input type="hidden" name="txt_id_cate" id="txt_id_cate" value="">
+            <input type="hidden" value="<?php echo $mr['parent_id']?>" name="parent_id"/>
+            <input type="hidden" value="<?php echo $mr['testing_code']?>" name="testing_code"/>
             <?php 
               if(!empty($courses) && $courses['type'] == 0){
                 if((!empty($study[0]['lesson_pass']) && $study[0]['lesson_pass'] == 'Y') ||$scoreparent >= $lesson['percent_test_pass']) {?> 
@@ -241,11 +242,11 @@
                 <?php }?>
             <?php }?>
             
-            <button style="min-width:110px; margin-top: 10px;margin-left: 5px;" class="btn btn-success" type="button" name="btn_submit" id="btn_submit" onclick="$('#testagain').submit()" title="Retake the entire test." data-toggle="tooltip">
+            <button style="min-width:110px; margin-top: 10px;margin-left: 5px;" class="btn btn-success" type="button" name="btn_submit" id="btn_submit" onclick="$('.loading_img').show();$('#testagain').submit();" title="Retake the entire test." data-toggle="tooltip">
               Test Again
             </button>
 
-            <button <?php if($scoreparent >= 99.9) echo 'style="display:none"';?> style="min-width:110px; margin-top: 10px;margin-left: 5px;" class="btn btn-success" type="button" name="btn_missing" id="btn_onlymissing" onclick="$('#frmcategory').submit()" title="Retake just the portion you got wrong." data-toggle="tooltip">
+            <button <?php if($scoreparent >= 99.9) echo 'style="display:none"';?> style="min-width:110px; margin-top: 10px;margin-left: 5px;" class="btn btn-success" type="button" name="btn_missing" id="btn_onlymissing" onclick="$('.loading_img').show();$('#frmcategory').submit();" title="Retake just the portion you got wrong." data-toggle="tooltip">
               <span>Only Missing</span>
             </button>
      
@@ -278,22 +279,26 @@
                   foreach($mr['mlist'] as $key => $value){ ?>
                     <tr>
                       <td align="left">
-                        <?php echo $key ?>: <span style="color:red"><?php echo  ($value[1] != 0)? number_format(($value[0]*100)/$value[1], 2, ',', ' '):''; ?>% </span><br />
-                        ( total <?php echo $value[1]?> - answer : <?php echo $value[0];?> )
+                        <?php 
+                        	//echo $key 
+                        	$m_category = $this->category_model->get($key);
+                        	echo isset($m_category)?$m_category['category']:'';
+                        ?>: <span style="color:red"><?php echo ($value['pass'] != 0)? number_format(($value['pass']*100)/$value['total'], 2, ',', ' '):'0,00'; ?>% </span><br />
+                        ( total <?php echo $value['total']?> - answer : <?php echo $value['pass'];?> )
                       </td>
                     
                       <td width="15%" align="center" style="vertical-align: middle;">
-                        <?php if((($value[0]*100)/$value[1]) != 100) {?>
-                          <button type="button" class="btn" id="detail<?php echo $value[2]?>" onclick="
+                        <?php if($value['pass'] != $value['total']) {?>
+                          <button type="button" class="btn" id="detail<?php echo $key?>" onclick="
                             $('#contail').hide('fast');
-                            $('#showwrong').html($('#showdetail<?php echo $value[2]?>').html());
+                            $('#showwrong').html($('#showdetail<?php echo $key?>').html());
                             $('#showwrong').show('slow');
                             $('#showwrong #showdetail').attr('style','display:block;position: absolute; width: 40%;border: 1px solid #fff;background: #fff;text-align: left;top: 40%;left: 48%; box-shadow:#ccc 0 0 5px;')">Missed Questions</button>
                         <?php }?>       
-                        <div class="showdetail" id="showdetail<?php echo $value[2]?>" style="display:none;position: absolute; width: 40%;border: 1px solid #fff;background: #fff;text-align: left;top: 40%;left: 48%; box-shadow:#ccc 0 0 5px; ">
+                        <div class="showdetail" id="showdetail<?php echo $key?>" style="display:none;position: absolute; width: 40%;border: 1px solid #fff;background: #fff;text-align: left;top: 40%;left: 48%; box-shadow:#ccc 0 0 5px; ">
                           <table class="table table-striped table-condensed main_data_13 table-bordered" style="margin-bottom: 0;" width="100%">
                             <tr style="text-align:center; background:#bbb; color:#555; line-height:30px;font-size:16px; font-weight:bold">
-                              <td colspan="3" class="title_test"><?php echo ucfirst($key) ?></td>
+                              <td colspan="3" class="title_test"><?php echo ucfirst(isset($m_category)?$m_category['category']:''); ?></td>
                             </tr>
                             <tr style="background:#F3F3F1">
                               <td class="text-center"><strong>Question</strong></td>
@@ -302,6 +307,7 @@
                             </tr>
                             <?php if(!empty($value['answer'])){
                               foreach($value['answer'] as $val){
+                              	if($val['result'] != 1){
                                  $question = isset($val['question'])?$val['question']:'';
                                  $has      = (isset($val['has']) && $val['has'] != '')?$val['has']:'No Answer';
                                  $answer   = isset($val['answer'])?$val['answer']:'';
@@ -333,13 +339,13 @@
                                     </tr>
                                 <?php }
                               }
-                            }?> 
+                            }}?> 
                           </table>
                         </div>
                       </td>
                 
                       <td width="15%" align="center" style="vertical-align: middle;">
-                        <button type="button" class="btn" id="viewchart<?php echo $value[2]?>" onclick=" $('.showwrong').hide('fast'); $('#contail').show('slows'); getChart('<?php echo $value[2]?>','<?php echo $this->sess_cus['id']?>','<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>','<?php echo isset($courses['id'])?$courses['id']:"0" ?>')">View Graph</button>
+                        <button type="button" class="btn" id="viewchart<?php echo $key?>" onclick=" $('.showwrong').hide('fast'); $('#contail').show('slows'); getChart('<?php echo $key?>','<?php echo $this->sess_cus['id']?>','<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>','<?php echo isset($courses['id'])?$courses['id']:"0" ?>')">View Graph</button>
                       </td>
                     </tr>
                   <?php }?>
@@ -357,9 +363,6 @@
               $arraytest = array();
               $arrayhas = array();
               if(!empty($chartlist) && $chartlist!=false){
-                // echo '<pre>';
-                // print_r($chartlist);
-                // die();
                 for($i = 0 ; $i<count($chartlist);$i++){
                   $temp = $chartlist[$i]['test']['test_title'];
                   if(!in_array($temp ,$arrayhas))
@@ -453,7 +456,6 @@
                     ],
                     tooltip: {
                       formatter: function() {
-                        //console.log(this);
                         var strdate = this.x.split('-',-1)[0];  
                         var datetermp = strdate.substr(2,2)+'/'+strdate.substr(4,2)+'/20'+strdate.substr(0,2);
                         return 'Date: ' + this.x + '<br>Score: ' + this.y + '</b>';
@@ -464,15 +466,6 @@
                             stacking: 'normal'
                         }
                     },
-                     // legend: {
-                       //   layout: 'vertical',
-                      //    align: 'left',
-                      //    x: 120,
-                      //    verticalAlign: 'top',
-                      //    y: 100,
-                      //    floating: true,
-                     //     backgroundColor: '#FFFFFF'
-                    //  },
                     series: [
                     <?php
                       if(!empty($chartlist) && $chartlist!=false){
@@ -515,25 +508,6 @@
                       },
                       <?php }
                       }?>
-                <?php /*
-                if(!empty($chartlist) && $chartlist!=false){
-                  foreach($arraytest as $value){?>{
-                          name: 'Score',
-                          type: 'spline',
-                          data: [
-                  <?php
-                    $i=0;
-                    foreach($chartlist as $id => $list){
-                      if($value == $list['test']['test_title']){ ?>
-                      [
-                                <?php echo $i;?> , <?php echo $list['parent_score'];?>
-                      ],
-                      <?php } $i++;
-                    }?> 
-                  ]},
-
-                  <?php }
-                }*/?>
 
                 {
                     name: 'Pass Score',
@@ -575,34 +549,43 @@
 
         <!-- tab 2 -->
         <?php if(!empty($courses) && $courses['type'] == 1){ ?>
+        <form id="frm_wholecategory" action="<?php echo url::base() ?>courses/testing_wholecategory" method="post">
+          <input type="hidden" name="hd_test" value="<?php echo $mr['idtest']?>" />
+          <input type="hidden" name="testing_code" value="<?php echo $mr['testing_code']?>"/>
+          <input type="hidden" name="parent_id" value="<?php echo $mr['parent_id']?>"/>
+<!--           <input type="hidden" value="" id="txt_hd_cate_id" name="txt_hd_cate_id"/> -->
+          <input type="hidden" name="txt_id_cate" id="txt_id_cate" value="">
+          <input type="hidden" name="txt_id_courses" id="txt_id_courses" value="<?php echo isset($courses['id'])?$courses['id']:"" ?>">
+          <input type="hidden" name="txt_id_lesson" id="txt_id_lesson" value="<?php echo isset($lesson['id'])?$lesson['id']:"" ?>">
+        </form>
+
         <div id="tabs-2" style="overflow: hidden;">
           <div class="col-sm-12">
             <div class="box_shadow">
               <div class="table-responsive">
                   <table class="table table-striped table-condensed main_data_13" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom: 0;">
+                  <tr>
+                    <td align="left" style="font-weight: bold;color: red;padding-top: 10px;padding-bottom: 10px;">
+                      Category
+                    </td>
+                    <td width="25%" align="center" style="padding-top: 10px;padding-bottom: 10px;vertical-align: middle;text-align: center;font-weight: bold;color: red;">
+                      Retest Options
+                    </td>
+                  </tr>
                   <?php
-                    if(!empty($m_all_categoty)){
-                      foreach ($m_all_categoty as $sl_all_cate => $item_all_cate) { ?>
-                        <tr>
-                          <td align="left">
-                            <?php echo $item_all_cate['category']; ?>: <span style="color:red">100,00%</span><br />
-                            ( total <?php echo $item_all_cate['sl'];?> - answer : <?php echo $item_all_cate['sl'];;?> )
-                          </td>
-                          <td width="25%" align="center" style="vertical-align: middle;text-align: right;">
-                              <button type="button" class="btn" onclick="fn_cate(<?php echo $item_all_cate['uid']?>)">Whole Category</button>       
-                          </td>
-                        </tr>
-                    <?php }}
                     foreach($mr['mlist'] as $key => $value){ ?>
                       <tr>
                         <td align="left">
-                          <?php echo $key ?>: <span style="color:red"><?php echo  ($value[1] != 0)? number_format(($value[0]*100)/$value[1], 2, ',', ' '):''; ?>% </span><br />
-                          ( total <?php echo $value[1]?> - answer : <?php echo $value[0];?> )
+                          <?php
+                          	$m_category = $this->category_model->get($key);
+                          	echo isset($m_category)?$m_category['category']:'';
+                          ?>: <span style="color:red"><?php echo  ($value['pass'] != 0)? number_format(($value['pass']*100)/$value['total'], 2, ',', ' '):'0,00'; ?>% </span><br />
+                          ( total <?php echo $value['total']?> - answer : <?php echo $value['pass'];?> )
                         </td>
                         <td width="25%" align="center" style="vertical-align: middle;text-align: right;">
-                          <button type="button" class="btn" onclick="fn_cate(<?php echo $value[2]?>)">Whole Category</button>
-                          <?php if((($value[0]*100)/$value[1]) != 100) {?>
-                            <button type="button" class="btn" onclick="fn_test_cate(<?php echo $value[2]?>)">Only Missing</button>
+                          <button type="button" class="btn" onclick="fn_cate(<?php echo $key?>)">Whole Category</button>
+                          <?php if($value['pass'] != $value['total']) {?>
+                            <button type="button" class="btn" onclick="fn_test_cate(<?php echo $key?>)">Only Missing</button>
                           <?php }?>       
                         </td>
                       </tr>
@@ -653,16 +636,19 @@
   gallery.buildpagination(["gallerypaginate"])
 
   function fn_finish(){
+    $('.loading_img').show();
     $('#txt_finish').val(1);
     $('#testagain').submit();
   }
   function fn_test_cate(id){
+    $('.loading_img').show();
     $('#txt_hd_cate_id').val(id);
     $('#frmcategory').submit();
   }
   function fn_cate(id){
+    $('.loading_img').show();
     $('#txt_id_cate').val(id);
-    $('#testagain').submit();
+    $('#frm_wholecategory').submit();
   }
 </script>
  

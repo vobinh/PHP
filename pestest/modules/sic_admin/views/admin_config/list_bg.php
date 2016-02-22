@@ -106,7 +106,10 @@
             }
         }
     );
-    }
+}
+function chang_opacity(val){
+    $("#div_img").fadeTo(1000, val);
+}
 $(function() {
     $('#txt_img_opacity').keyup(function(event) {
         $("#div_img").fadeTo(1000, $(this).val());
@@ -128,7 +131,7 @@ $(function() {
     $('#btn_add_bg').click(function(event) {
         $("#div_img").empty();
         $('#uploadFile').val('');
-        $('#txt_img_opacity').val('');
+        $('#txt_img_opacity').val('1');
         $("#div_img").fadeTo(1000, 1);
         $( "#div_add_bg" ).dialog('open');
     });

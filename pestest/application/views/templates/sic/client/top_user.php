@@ -75,3 +75,6 @@
 		<div id="loading" style=" display:none; position: fixed; z-index: 1000; border: 1px solid #ccc;left: 45%;top: -7px;background: #BFBAFD;padding: 10px;border-radius: 12px;">
 			Loading ....
 		</div>
+		<div class="loading_img" style="display:none; position: fixed;background-color: rgba(204, 204, 204, 0.63);z-index: 3;top: 0px;left: 0px;right: 0px;bottom: 0px;">
+		  <div class="cssload-loader"></div>
+		</div>

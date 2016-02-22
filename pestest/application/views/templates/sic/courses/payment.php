@@ -1,68 +1,5 @@
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
-<style type="text/css">
-  .cssload-loader{
-    display:block;
-    position:absolute;
-    height:6em;width:6em;
-    left:50%;
-    top:50%;
-    margin-top:-3em;
-    margin-left:-3em;
-    background-color:rgb(51,136,153);
-    border-radius:3.5em 3.5em 3.5em 3.5em;
-    -o-border-radius:3.5em 3.5em 3.5em 3.5em;
-    -ms-border-radius:3.5em 3.5em 3.5em 3.5em;
-    -webkit-border-radius:3.5em 3.5em 3.5em 3.5em;
-    -moz-border-radius:3.5em 3.5em 3.5em 3.5em;
-    box-shadow:inset 0 0 0 0.5em rgb(236,234,224);
-    -o-box-shadow:inset 0 0 0 0.5em rgb(236,234,224);
-    -ms-box-shadow:inset 0 0 0 0.5em rgb(236,234,224);
-    -webkit-box-shadow:inset 0 0 0 0.5em rgb(236,234,224);
-    -moz-box-shadow:inset 0 0 0 0.5em rgb(236,234,224);
-    background: linear-gradient(-45deg, rgb(0,153,0), rgb(0,153,0) 50%, rgb(204,204,0) 50%, rgb(204,204,0));
-    background: -o-linear-gradient(-45deg, rgb(0,153,0), rgb(0,153,0) 50%, rgb(204,204,0) 50%, rgb(204,204,0));
-    background: -ms-linear-gradient(-45deg, rgb(0,153,0), rgb(0,153,0) 50%, rgb(204,204,0) 50%, rgb(204,204,0));
-    background: -webkit-linear-gradient(-45deg, rgb(0,153,0), rgb(0,153,0) 50%, rgb(204,204,0) 50%, rgb(204,204,0));
-    background: -moz-linear-gradient(-45deg, rgb(0,153,0), rgb(0,153,0) 50%, rgb(204,204,0) 50%, rgb(204,204,0));
-    background-blend-mode: multiply;
-    border-top:7px solid rgb(0,153,0);
-    border-left:7px solid rgb(0,153,0);
-    border-bottom:7px solid rgb(204,204,0);
-    border-right:7px solid rgb(204,204,0);
-    animation:cssload-roto 1.15s infinite linear;
-    -o-animation:cssload-roto 1.15s infinite linear;
-    -ms-animation:cssload-roto 1.15s infinite linear;
-    -webkit-animation:cssload-roto 1.15s infinite linear;
-    -moz-animation:cssload-roto 1.15s infinite linear;
-  }
-
-
-  @keyframes cssload-roto {
-    0%{transform:rotateZ(0deg);}
-    100%{transform:rotateZ(360deg);}
-  }
-
-  @-o-keyframes cssload-roto {
-    0%{-o-transform:rotateZ(0deg);}
-    100%{-o-transform:rotateZ(360deg);}
-  }
-
-  @-ms-keyframes cssload-roto {
-    0%{-ms-transform:rotateZ(0deg);}
-    100%{-ms-transform:rotateZ(360deg);}
-  }
-
-  @-webkit-keyframes cssload-roto {
-    0%{-webkit-transform:rotateZ(0deg);}
-    100%{-webkit-transform:rotateZ(360deg);}
-  }
-
-  @-moz-keyframes cssload-roto {
-    0%{-moz-transform:rotateZ(0deg);}
-    100%{-moz-transform:rotateZ(360deg);}
-  }
-</style>
 <style type="text/css" media="screen">
 	.my_row{
 		font-size: 16px;
@@ -118,9 +55,6 @@ function checkvalid() {
 	return check;
 }
 </script>
-<div class="loading_img" style="display:none; position: fixed;background-color: rgba(204, 204, 204, 0.63);z-index: 3;top: 0px;left: 0px;right: 0px;bottom: 0px;">
-  <div class="cssload-loader"></div>
-</div>
 <div class="col-md-12">
 	<div class="row">
 		<div class="col-md-12">

@@ -11,9 +11,9 @@
 <?php }else { ?>
   <script language="javascript" src="<?php echo $this->site['base_url']?>js/Timer/countdown.js"></script>
   <script>
- // $(document).ready(function() {
-    countdown("spanTimer",<?php echo $mr['time_value'] ?>, 0 );
-  //});
+    $().ready(function() {
+      countdown("spanTimer",<?php echo $mr['time_value'] ?>, 0 );
+    });
   </script>
 <?php } ?>
 
@@ -156,17 +156,16 @@
                   <div class="ans demo-list">
                     <?php for($j=0;$j<count($mlist[$k]['questionnaires'][$i]['answer']);$j++) {?>
                       <div class="ans-item" style="margin:5px 0;">
-                        <div style="float:left; line-height:1.5em;width:30px;">
-                            <label>
-                              <input onClick="counteranswer()" id="radio<?php echo isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['uid'])?$mlist[$k]['questionnaires'][$i]['answer'][$j]['uid']:"" ?>" class="radio4" type="radio"value="<?php echo $mlist[$k]['questionnaires'][$i]['answer'][$j]['type'] ?>|<?php echo isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['uid'])?$mlist[$k]['questionnaires'][$i]['answer'][$j]['uid']:"" ?>|<?php echo $mlist[$k]['questionnaires'][$i]['category_uid']?>" name="radio<?php echo $mlist[$k]['questionnaires'][$i]['uid'] ?>" style="margin-top:7px;width:auto;" previousvalue="false">
-                              <label onClick="counteranswer()" for="radio<?php echo isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['uid'])?$mlist[$k]['questionnaires'][$i]['answer'][$j]['uid']:"" ?>"></label>
-                            </label>
-                        </div>
-                        <div style="float:left; line-height:1.5em;padding-left:10px;">
+                        <!-- <div style="float:left; line-height:1.5em;width:30px;"></div> -->
+                        <div style="float:left; line-height:1.5em;">
+                          <label style="margin-bottom: 0px;">
+                            <input onClick="counteranswer()" id="radio<?php echo isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['uid'])?$mlist[$k]['questionnaires'][$i]['answer'][$j]['uid']:"" ?>" class="radio4" type="radio"value="<?php echo $mlist[$k]['questionnaires'][$i]['answer'][$j]['type'] ?>|<?php echo isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['uid'])?$mlist[$k]['questionnaires'][$i]['answer'][$j]['uid']:"" ?>|<?php echo $mlist[$k]['questionnaires'][$i]['category_uid']?>" name="radio<?php echo $mlist[$k]['questionnaires'][$i]['uid'] ?>" style="margin-top:7px;width:auto;" previousvalue="false">
+                            <label onClick="counteranswer()" for="radio<?php echo isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['uid'])?$mlist[$k]['questionnaires'][$i]['answer'][$j]['uid']:"" ?>"></label>
+                          </label>
                           <?php if(isset($mlist[$k]['questionnaires'][$i]['answer'][$j]['images']) &&!empty($mlist[$k]['questionnaires'][$i]['answer'][$j]['images']) ) {?>
-                              <img src="<?php echo linkS3 ?>answer/<?php echo $mlist[$k]['questionnaires'][$i]['answer'][$j]['images']?>" />
+                            <img src="<?php echo linkS3 ?>answer/<?php echo $mlist[$k]['questionnaires'][$i]['answer'][$j]['images']?>" />
                           <?php }else { ?>
-                              <?php echo $mlist[$k]['questionnaires'][$i]['answer'][$j]['answer'] ?>
+                            <?php echo $mlist[$k]['questionnaires'][$i]['answer'][$j]['answer'] ?>
                           <?php } ?>
                         </div>
                       </div>
@@ -192,9 +191,12 @@
             <input type="hidden" value="<?php echo isset($mr['type_time'])?$mr['type_time']:"" ?>" name="hd_type" id="hd_type"  />
             <input type="hidden" value="<?php echo isset($mr['time_value'])?$mr['time_value']:"" ?>" name="hd_duration" id="hd_duration"  />
             <input type="hidden" value="<?php if(isset($mr['parent_id'])) echo $mr['parent_id']?>" name="parent_id"/>
+            <input type="hidden" name="testing_code" value="<?php echo isset($mr['testing_code'])?$mr['testing_code']:''; ?>"/>
+            <input type="hidden" name="testing_code_wrong" value="<?php echo isset($mr['testing_code_wrong'])?$mr['testing_code_wrong']:''; ?>"/>
             <input type="hidden" value="<?php echo $mr['typetest']?>" name="typetest"/>
             <input type="hidden" name="txt_id_courses" id="txt_id_courses" value="<?php echo isset($courses['id'])?$courses['id']:"" ?>">
             <input type="hidden" name="txt_id_lesson" id="txt_id_lesson" value="<?php echo isset($lesson['id'])?$lesson['id']:"0" ?>">
+            <input type="hidden" name="txt_using_catelogy" id="txt_using_catelogy" value="<?php echo isset($using_catelogy)?$using_catelogy:"0" ?>">
             <?php //if(isset($n)&& $n >0) {?>
               <button style="padding: 10px 15px;" class="btn btn-success" type="submit" name="btn_submit" id="btn_submit" onclick="$(this).hide('slow');$('#loading').show('fast');$('#loading_icon').show('fast')"><span>Submit</span>
               </button>

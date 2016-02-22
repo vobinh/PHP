@@ -806,9 +806,9 @@ class Courses_Controller extends Template_Controller {
 		$mtest = $this->test_model->get();
 		$this->template->content->mr      = $mr;
 		$this->template->content->mlist   = $mist_cate;
-		$this->template->content->mtest   = $mtest ;
-		$this->template->content->courses = $courses ;
-		$this->template->content->lesson  = $lesson ;
+		$this->template->content->mtest   = $mtest;
+		$this->template->content->courses = $courses;
+		$this->template->content->lesson  = $lesson;
 	}
 	
 	public function getTestCategory($testing_code , $test_uid){
@@ -934,6 +934,116 @@ class Courses_Controller extends Template_Controller {
 		return $chartlist;
 	}
 	
+	public function testing_wholecategory(){
+		if(!isset($_POST['hd_test'])){
+			url::redirect(url::base().'courses');
+		    die();
+		}
+		$this->template->content = new View('templates/'.$this->site['config']['TEMPLATE'].'/courses/test');
+		$this->session->delete('sess_save');
+		$mr         = $this->test_model->get($_POST['hd_test']);
+		$id_courses = $this->input->post('txt_id_courses');
+		$id_lesson  = $this->input->post('txt_id_lesson');
+		$lesson     = $this->lesson_model->get($id_lesson);
+		$courses    = $this->courses_model->get($id_courses);
+		$mist_cate  = array();
+
+		//$this->db->where('result',0);
+		$this->db->where('member_uid',$this->sess_cus['id']);
+		if(!empty($courses) && $courses['type'] == 0){
+			$this->db->where('id_lesson',$id_lesson);
+		}elseif(!empty($courses) && $courses['type'] == 1){
+			$this->db->where('id_course',$courses['id']);
+		}
+		$this->db->where('testing_code',$_POST['testing_code']);
+		$arrayquestion = $this->testingdetail_model->get();
+
+		$arraycategory = array();
+		foreach($arrayquestion as $value){
+			$questionnaires = $this->questionnaires_model->get($value['questionnaires_uid']);
+			if(isset($questionnaires['category_uid']) && !in_array($questionnaires['category_uid'],$arraycategory)){
+				$mist_cate[]     = $this->category_model->get($questionnaires['category_uid']);
+				$arraycategory[] = $questionnaires['category_uid'];
+			}
+		}
+		$mr['typetest'] = 2;
+		$question = array();
+		foreach($arrayquestion as $value){
+			$question[] = $this->questionnaires_model->get($value['questionnaires_uid']);
+		}
+		$qty_question = 0;
+		foreach($mist_cate as $key => $val){ 		
+			foreach($question as $value){
+				if(isset($val['uid']) && $val['uid'] == $value['category_uid']){
+					$mist_cate[$key]['questionnaires'][] = $value;
+					for($i=0;$i<count($mist_cate[$key]['questionnaires']);$i++){
+						$rand= $this->answer_model->get_questionnaires($mist_cate[$key]['questionnaires'][$i]['uid']);
+						if(!empty($rand)){
+							$rand_0=$this->answer_model->get_questionnaires_zero($mist_cate[$key]['questionnaires'][$i]['uid']);
+							$mist_cate[$key]['questionnaires'][$i]['answer'] = array_merge($rand,$rand_0);
+						}else{
+							$mist_cate[$key]['questionnaires'][$i]['answer'] = $this->answer_model->get_questionnaires_zero($mist_cate[$key]['questionnaires'][$i]['uid']);
+						}
+					}
+					$qty_question++;
+				}
+			}
+			if($val== ''){
+				foreach($question as $value){
+			        if(!empty($value)){
+						$mist_cate[0]['questionnaires'][] = $value;
+						for($i=0;$i<count($mist_cate[0]['questionnaires']);$i++){
+							$rand= $this->answer_model->get_questionnaires($mist_cate[0]['questionnaires'][$i]['uid']);
+							if(!empty($rand)){
+								$rand_0=$this->answer_model->get_questionnaires_zero($mist_cate[0]['questionnaires'][$i]['uid']);
+								$mist_cate[$key]['questionnaires'][$i]['answer'] = array_merge($rand,$rand_0);
+							}else{
+								$mist_cate[$key]['questionnaires'][$i]['answer'] = $this->answer_model->get_questionnaires_zero($mist_cate[0]['questionnaires'][$i]['uid']);
+							}
+						}
+						$qty_question++; 
+					}
+				}
+				break;
+			}	
+		}
+
+		if(!empty($lesson['id_categories'])){
+			$m_cate = $this->category_model->get($lesson['id_categories']);
+			$mr['time_value'] =  floor($mr['time_value'] * $m_cate['category_percentage'] / 100);
+		}
+		$this->db->where('status',1);
+		$mtest = $this->test_model->get();
+		if(isset($_POST['txt_id_cate']) && !empty($_POST['txt_id_cate'])){
+			$test_cate    = $_POST['txt_id_cate'];
+			if(!empty($courses) && $courses['type'] == 1){
+				if(!empty($mist_cate)){
+					$qty_question = 0;
+					foreach ($mist_cate as $sl => $item_cate) {
+						if($item_cate['uid'] == $test_cate){
+							$mist_cate[$sl]['display'] = 'yes';
+							$qty_question += count($item_cate['questionnaires']);
+						}
+						else{
+							$mist_cate[$sl]['display'] = 'no';
+							unset($mist_cate[$sl]);
+						}	
+					}
+				}
+			}
+		}
+		$mist_cate = array_values($mist_cate);
+		$mr['qty_question']                      = $qty_question;
+		$mr['parent_id']                         = $_POST['parent_id'];
+		$mr['testing_code']                      = $_POST['testing_code'];
+		$this->template->content->mr             = $mr;
+		$this->template->content->mlist          = $mist_cate;
+		$this->template->content->mtest          = $mtest;
+		$this->template->content->lesson         = $lesson;
+		$this->template->content->courses        = $courses;
+		$this->template->content->using_catelogy = isset($_POST['txt_id_cate'])?$_POST['txt_id_cate']:'';
+	}
+
 	public function testingwrong(){
 		if(!isset($_POST['hd_test'])){
 			url::redirect(url::base().'courses');
@@ -946,7 +1056,7 @@ class Courses_Controller extends Template_Controller {
 		$id_lesson  = $this->input->post('txt_id_lesson');
 		$lesson     = $this->lesson_model->get($id_lesson);
 		$courses    = $this->courses_model->get($id_courses);
-		$mist_cate = array();
+		$mist_cate  = array();
 		$this->db->where('result',0);
 		$this->db->where('member_uid',$this->sess_cus['id']);
 		if(!empty($courses) && $courses['type'] == 0){
@@ -978,9 +1088,9 @@ class Courses_Controller extends Template_Controller {
 						$rand= $this->answer_model->get_questionnaires($mist_cate[$key]['questionnaires'][$i]['uid']);
 						if(!empty($rand)){
 							$rand_0=$this->answer_model->get_questionnaires_zero($mist_cate[$key]['questionnaires'][$i]['uid']);
-							$mist_cate[$key]['questionnaires'][$i]['answer']=array_merge($rand,$rand_0);
+							$mist_cate[$key]['questionnaires'][$i]['answer'] = array_merge($rand,$rand_0);
 						}else{
-							$mist_cate[$key]['questionnaires'][$i]['answer']=$this->answer_model->get_questionnaires_zero($mist_cate[$key]['questionnaires'][$i]['uid']);
+							$mist_cate[$key]['questionnaires'][$i]['answer'] = $this->answer_model->get_questionnaires_zero($mist_cate[$key]['questionnaires'][$i]['uid']);
 						}
 					}
 					$qty_question++;
@@ -1027,8 +1137,9 @@ class Courses_Controller extends Template_Controller {
 				}
 			}
 		}
-		$mr['qty_question'] = $qty_question;
-		$mr['parent_id']    = $_POST['parent_id'];
+		$mr['qty_question']               = $qty_question;
+		$mr['parent_id']                  = $_POST['parent_id'];
+		$mr['testing_code_wrong']         = $_POST['testing_code'];
 		$this->template->content->mr      = $mr;
 		$this->template->content->mlist   = $mist_cate;
 		$this->template->content->mtest   = $mtest;
@@ -1066,7 +1177,7 @@ class Courses_Controller extends Template_Controller {
 					$fail++;
 				}
 			}
-			if($_POST['hd_type']==0)
+			if($_POST['hd_type'] == 0)
 				$mr['timeduration'] = $_POST['hd_timeduration'];
 			else{
 				$time = $_POST['hd_duration'];
@@ -1095,6 +1206,7 @@ class Courses_Controller extends Template_Controller {
 			$mlist     = array();
 			$chartlist = array();
 			$olist     = array();
+			/*
 			foreach($percentcategory as $key => $value){
 			   	if($value[1] != 0){
 					$category = $this->category_model->get($key);
@@ -1126,6 +1238,7 @@ class Courses_Controller extends Template_Controller {
 					}
 				}
 			}
+			*/
 			$this->db->where('member_uid',$this->sess_cus['id']);
 			$this->db->where('test_uid',$_POST['hd_test']);
 			if(!empty($courses) && $courses['type'] == 0){
@@ -1135,30 +1248,9 @@ class Courses_Controller extends Template_Controller {
 			}
 			$stt_no       = $this->testing_model->get_code($this->format_str_date(date('m/d/Y'),$this->site['site_short_date']));
 			$testing_code = date('ymd').'-'.$stt_no;
+
 			//get number question of test
 			$test_main = $this->test_model->get($_POST['hd_test']);
-			if(!empty($courses) && $courses['type'] == 1){
-				$this->db->where('test_uid',$test_main['uid']);
-				$this->db->where('category_percentage >=',0);
-				$m_all_categoty = $this->category_model->get();
-				if(!empty($m_all_categoty)){
-					if(!empty($mlist)){
-						foreach ($mlist as $sl_item => $item_mlist) {
-							foreach ($m_all_categoty as $sl_all_cate => $item_all_cate) {
-								if($item_mlist[2] == $item_all_cate['uid']){
-									unset($m_all_categoty[$sl_all_cate]);
-									break;
-								}
-							}
-						}
-					}
-				}
-				if(!empty($m_all_categoty)){
-					foreach ($m_all_categoty as $sl_all_cate => $item_all_cate) {
-						$m_all_categoty[$sl_all_cate]['sl'] = floor($test_main['qty_question'] * $item_all_cate['category_percentage'] / 100);
-					}
-				}
-			}
 			if(!empty($lesson['id_categories'])){
 				$m_cate = $this->category_model->get($lesson['id_categories']);
 				$number_question =  floor($test_main['qty_question'] * $m_cate['category_percentage'] / 100);
@@ -1174,16 +1266,18 @@ class Courses_Controller extends Template_Controller {
 				}
 				$number_question = !empty($total_questions)?$total_questions:count($_POST['hd_question']);
 			}
+
 			$mr['fail']      = round(($fail*100)/$number_question,1);
 			$mr['pass']      = round(($pass*100)/$number_question,1);
-			if(isset($_POST['parent_id']) && $_POST['parent_id']!='')
+			if(isset($_POST['parent_id']) && $_POST['parent_id'] != '')
 				$mr['parent_id'] = $_POST['parent_id'];
 			else
 			  	$mr['parent_id'] = $testing_code;
 			/**
 			  * Save data test
 			  */ 
-			$this->save($mr['timeduration'],$mr['pass'],$chartlist,$testing_code,$mr['parent_id'],$_POST['typetest']);
+			$this->save($mr['timeduration'],$mr['pass'],$chartlist,$testing_code,$mr['parent_id'],$_POST['typetest'],$number_question,$pass,$fail);
+			
 			$this->db->limit(1);
 			$this->db->where('testing_code',$testing_code);
 			$this->db->where('member_uid',$this->sess_cus['id']);
@@ -1247,6 +1341,7 @@ class Courses_Controller extends Template_Controller {
 			}
 			$mr['last_test'][0]['test'] = $this->test_model->get($mr['last_test'][0]['test_uid']);
 			$this->session->set('sess_save',$testing_code);
+		    /*
 		    $this->db->where('test_uid',$mr['last_test'][0]['test_uid']);
 		    $this->db->where('category_percentage >',0);
 		    $this->db->orderby('parent_id','ASC');
@@ -1263,8 +1358,65 @@ class Courses_Controller extends Template_Controller {
 						$olist[$value['uid']] = $value['category'];
 				}
 			}
+			*/
+			/**
+			 * Get data
+			 */
+			$this->db->where('member_uid',$this->sess_cus['id']);
+			if(!empty($courses) && $courses['type'] == 0){
+				$this->db->where('id_lesson',$id_lesson);
+			}elseif(!empty($courses) && $courses['type'] == 1){
+				$this->db->where('id_course',$courses['id']);
+			}
+
+			$this->db->where('testing_code',$testing_code);
+			$arrayquestion = $this->testingdetail_model->get();
+			if(!empty($arrayquestion)){
+				foreach($arrayquestion as $sl_question => $value){
+					$questionnaires = $this->questionnaires_model->get($value['questionnaires_uid']);
+					$this->db->where('questionnaires_uid',$value['questionnaires_uid']);
+					$this->db->where('type',1);
+					$answer = $this->answer_model->get();
+					if(isset($questionnaires['category_uid'])){
+						$arrayquestion[$sl_question]['category_uid']       = $questionnaires['category_uid'];
+						$arrayquestion[$sl_question]['question']           = $questionnaires['question'];
+						$arrayquestion[$sl_question]['created_by']         = $questionnaires['created_by'];
+						$arrayquestion[$sl_question]['input_date']         = $questionnaires['input_date'];
+						$arrayquestion[$sl_question]['answer_description'] = $questionnaires['answer_description'];
+						$arrayquestion[$sl_question]['note']               = $questionnaires['note'];
+						$arrayquestion[$sl_question]['note_ext']           = $questionnaires['note_ext'];
+						$arrayquestion[$sl_question]['status']             = $questionnaires['status'];
+						$arrayquestion[$sl_question]['answer']             = isset($answer[0]['answer'])?$answer[0]['answer']:'';
+						$arrayquestion[$sl_question]['images']             = isset($answer[0]['images'])?$answer[0]['images']:'';
+						if(!empty($value['selected_answer'])){
+							$hasanswer                                = $this->answer_model->get($value['selected_answer']);
+							$arrayquestion[$sl_question]['has']       = isset($hasanswer['answer'])?$hasanswer['answer']:'';
+							$arrayquestion[$sl_question]['hasimages'] = isset($hasanswer['images'])?$hasanswer['images']:'';
+						}else{
+							$arrayquestion[$sl_question]['has']       = '';
+							$arrayquestion[$sl_question]['hasimages'] = '';
+						}
+					}
+				}
+			}
+			$arr_data = array();
+			foreach ($arrayquestion as $key_1 => $value_1) {
+				if($value_1['result'] == 1){
+					if(!isset($arr_data[$value_1['category_uid']]['pass']))
+						$arr_data[$value_1['category_uid']]['pass'] = 1;
+					else
+						$arr_data[$value_1['category_uid']]['pass'] += 1;
+				}
+				if(!isset($arr_data[$value_1['category_uid']]['pass']))
+					$arr_data[$value_1['category_uid']]['pass'] = 0;
+				if(!isset($arr_data[$value_1['category_uid']]['total']))
+					$arr_data[$value_1['category_uid']]['total'] = 1;
+				else
+					$arr_data[$value_1['category_uid']]['total'] += 1;
+				$arr_data[$value_1['category_uid']]['answer'][] = $value_1;
+			}
 			$mr['idtest']       = $_POST['hd_test'];
-			$mr['mlist']        = $mlist;
+			$mr['mlist']        = $arr_data;//$mlist;
 			$mr['olist']        = $olist;
 			$mr['testing_code'] = $testing_code;
 			/**
@@ -1350,11 +1502,12 @@ class Courses_Controller extends Template_Controller {
 		die();
 	}
 
-	public function save($duration,$score,$category,$testing_code,$parent_code,$type='1'){
-		$parent_score = $score;
-		$id_courses   = $this->input->post('txt_id_courses');
-		$id_lesson    = $this->input->post('txt_id_lesson');
-		$courses      = $this->courses_model->get($id_courses);
+	public function save($duration,$score,$category,$testing_code,$parent_code,$type='1',$number_question,$pass,$fail){
+		$parent_score  = $score;
+		$id_courses    = $this->input->post('txt_id_courses');
+		$id_lesson     = $this->input->post('txt_id_lesson');
+		$courses       = $this->courses_model->get($id_courses);
+		$arrayquestion = array();
 		if($type == 2){
 			$this->db->where('parent_code',$parent_code);
 			$this->db->orderby('uid','desc');
@@ -1365,16 +1518,52 @@ class Courses_Controller extends Template_Controller {
 				else
 					$parent_score = $testing_parent[0]['parent_score'];
 			}
-			$m_d = (double)$score + (double)$parent_score;
-			$m_b = (double)99.9;
-			$a   = trim((string)$m_d);
-			if((double)$a >= (double)$m_b){
-				$m_d = 100 - $m_d;
-				if($m_d >= 0)
-					$score = ($score + abs($m_d));
-				else
-					$score = ($score - abs($m_d));
+
+			if(isset($_POST['txt_using_catelogy']) && !empty($_POST['txt_using_catelogy'])){
+				$this->db->where('member_uid',$this->sess_cus['id']);
+				if(!empty($courses) && $courses['type'] == 0){
+					$this->db->where('id_lesson',$id_lesson);
+				}elseif(!empty($courses) && $courses['type'] == 1){
+					$this->db->where('id_course',$courses['id']);
+				}
+				$this->db->where('testing_code',$_POST['testing_code']);
+				$arrayquestion = $this->testingdetail_model->get();
+				if(!empty($arrayquestion)){
+					foreach($arrayquestion as $sl_question => $value){
+						$questionnaires = $this->questionnaires_model->get($value['questionnaires_uid']);
+						if(isset($questionnaires['category_uid'])){
+							$mist_cate[]     = $this->category_model->get($questionnaires['category_uid']);
+							$arrayquestion[$sl_question]['category_uid'] = $questionnaires['category_uid'];
+						}
+					}
+					$m_pass = 0;
+					foreach ($arrayquestion as $key_question => $value_question) {
+						if($value_question['category_uid'] == $_POST['txt_using_catelogy']){
+							if($value_question['result'] == 1){
+								$m_pass++;
+							}
+						}
+					}
+					$m_question = $pass - $m_pass;
+					$score = round(($m_question*100)/$number_question,1);
+				}
 			}
+			if($score < 0){
+				$parent_score = (double)$parent_score + (double)$score;
+				$score        = 0;
+			}else{
+				$m_d = (double)$score + (double)$parent_score;
+				$m_b = (double)99.9;
+				$a   = trim((string)$m_d);
+				if((double)$a >= (double)$m_b){
+					$m_d = 100 - $m_d;
+					if($m_d >= 0)
+						$score = ($score + abs($m_d));
+					else
+						$score = ($score - abs($m_d));
+				}
+			}
+			
 		}else{
 			$score = 0;
 		}
@@ -1400,7 +1589,8 @@ class Courses_Controller extends Template_Controller {
 			/**
 			 * save testing category 
 			 */
-			$this->saveCategory($testing_code,$testing_date,$category,$_POST['hd_test'],$id_lesson,$courses['id'],0);
+			$this->save_Category($testing_code,$testing_date,$category,$_POST['hd_test'],$id_lesson,$courses['id'],0);
+			//$this->saveCategory($testing_code,$testing_date,$category,$_POST['hd_test'],$id_lesson,$courses['id'],0);
 		}elseif(!empty($courses) && $courses['type'] == 1){
 			$testing_date = $this->format_str_date(date('m/d/Y'),$this->site['site_short_date'],'/',date('H'),date('i'),0);
 			$record = array(
@@ -1419,15 +1609,82 @@ class Courses_Controller extends Template_Controller {
 		    /**
 			 * save testing detail
 			 */
-			$this->savedetail($testing_code,$id_lesson,$courses['id'],1);
+			$this->savedetail($testing_code,$id_lesson,$courses['id'],1,$arrayquestion);
 			/**
 			 * save testing category 
 			 */
-			$this->saveCategory($testing_code,$testing_date,$category,$_POST['hd_test'],$id_lesson,$courses['id'],1);
+			$this->save_Category($testing_code,$testing_date,$category,$_POST['hd_test'],$id_lesson,$courses['id'],1);
+			//$this->saveCategory($testing_code,$testing_date,$category,$_POST['hd_test'],$id_lesson,$courses['id'],1,$arrayquestion);
 		}
 	}
 
-	private function saveCategory($testing_code,$testing_date,$category,$test,$id_lesson,$id_course,$type=0){
+	private function save_Category($testing_code,$testing_date,$category,$test,$id_lesson,$id_course,$type=0){
+		$this->db->where('member_uid',$this->sess_cus['id']);
+		if($type == 0){
+			$this->db->where('id_lesson',$id_lesson);
+		}elseif($type == 1){
+			$this->db->where('id_course',$id_course);
+		}
+		$this->db->where('testing_code',$testing_code);
+		$data_question = $this->testingdetail_model->get();
+		if(!empty($data_question)){
+			foreach($data_question as $sl_question => $value){
+				$questionnaires = $this->questionnaires_model->get($value['questionnaires_uid']);
+				if(isset($questionnaires['category_uid'])){
+					$data_question[$sl_question]['category_uid'] = $questionnaires['category_uid'];
+				}
+			}
+			$arr_data = array();
+			foreach ($data_question as $key_1 => $value_1) {
+				if($value_1['result'] == 1){
+					if(!isset($arr_data[$value_1['category_uid']]['pass']))
+						$arr_data[$value_1['category_uid']]['pass'] = 1;
+					else
+						$arr_data[$value_1['category_uid']]['pass'] += 1;
+				}
+				if(!isset($arr_data[$value_1['category_uid']]['pass']))
+					$arr_data[$value_1['category_uid']]['pass'] = 0;
+				if(!isset($arr_data[$value_1['category_uid']]['total']))
+					$arr_data[$value_1['category_uid']]['total'] = 1;
+				else
+					$arr_data[$value_1['category_uid']]['total'] += 1;
+			}
+			if(!empty($arr_data)){
+				foreach($arr_data as $key => $value){
+					$percentage = ($value['pass']*100)/$value['total'];
+					if($type == 0){
+						$this->db->insert(
+							'testing_category',
+							array(
+								'category'     => $key,
+								'test'         => $test,
+								'percentage'   => $percentage,
+								'testing_code' => $testing_code,
+								'testing_date' => $testing_date,
+								'member_uid'   => $this->sess_cus['id'],
+								'id_lesson'    => $id_lesson
+							)
+						);
+					}elseif($type == 1){
+						$this->db->insert(
+							'testing_category',
+							array(
+								'category'     => $key,
+								'test'         => $test,
+								'percentage'   => $percentage,
+								'testing_code' => $testing_code,
+								'testing_date' => $testing_date,
+								'member_uid'   => $this->sess_cus['id'],
+								'id_course'    => $id_course
+							)
+						);
+					}
+				}
+			}
+		}
+	}
+
+	private function saveCategory($testing_code,$testing_date,$category,$test,$id_lesson,$id_course,$type=0,$arrayquestion=''){
 		foreach($category as $key=>$value){
 			if($type == 0){
 				$this->db->insert(
@@ -1457,9 +1714,82 @@ class Courses_Controller extends Template_Controller {
 				);
 			}
 		}
+		if(!empty($arrayquestion)){
+			$arr_acte      = array();
+			$arr_main_acte = array();
+			foreach ($arrayquestion as $key_1 => $value_1) {
+				if(!in_array($value_1['category_uid'], $arr_acte)){
+					$arr_acte[] = $value_1['category_uid'];
+					$arr = array('id'=> $value_1['category_uid'], 'code' => $value_1['testing_code']);
+					$arr_main_acte[] = $arr; 
+				}
+			}
+			if(!empty($arr_main_acte)){
+				foreach ($arr_main_acte as $key_2 => $value_2) {
+					$m_insert = true;
+					foreach ($category as $key_3 => $value_3) {
+						if($key_3 == $value_2['id']){
+							$m_insert = false;
+							break;
+						}
+					}
+					if($m_insert){
+						$this->db->where('category',$value_2['id']);
+						$this->db->where('testing_code',$value_2['code']);
+						$this->db->where('member_uid',$this->sess_cus['id']);
+						$m_data = $this->db->get('testing_category')->result_array(false);
+						if(!empty($m_data)){
+							$this->db->insert(
+								'testing_category',
+								array(
+									'category'     => $m_data[0]['category'],
+									'test'         => $m_data[0]['test'],
+									'percentage'   => $m_data[0]['percentage'],
+									'testing_code' => $testing_code,
+									'testing_date' => $testing_date,
+									'member_uid'   => $this->sess_cus['id'],
+									'id_course'    => $m_data[0]['id_course']
+								)
+							);
+						}
+					}
+				}
+			}
+		}
+
 	}
 	
-	public function savedetail($testing_code,$id_lesson,$id_course,$type=0){
+	public function savedetail($testing_code,$id_lesson,$id_course,$type=0,$arrayquestion=''){
+		if(isset($_POST['testing_code_wrong']) && !empty($_POST['testing_code_wrong'])){
+			$this->db->where('result',1);
+			$this->db->where('member_uid',$this->sess_cus['id']);
+			if($type == 0){
+				$this->db->where('id_lesson',$id_lesson);
+			}elseif($type == 1){
+				$this->db->where('id_course',$id_course);
+			}
+			$this->db->where('testing_code',$_POST['testing_code_wrong']);
+			$m_question = $this->testingdetail_model->get();
+			if(!empty($m_question)){
+				/**
+				 * Lay lai so cau hoi dung
+				 */
+				foreach ($m_question as $key_question => $value_question) {
+					$this->db->insert(
+						'testing_detail',
+						array(
+							'testing_code'       => $testing_code,
+							'member_uid'         => $value_question['member_uid'],
+							'id_lesson'          => $value_question['id_lesson'],
+							'questionnaires_uid' => $value_question['questionnaires_uid'],
+							'selected_answer'    => $value_question['selected_answer'],
+							'result'             => $value_question['result'],
+							'id_course'          => $value_question['id_course']
+					    )
+					);
+				}
+			}
+		}
 		for($i=0;$i<count($_POST['hd_question']);$i++){
 			if(isset($_POST['radio'.$_POST['hd_question'][$i]]) && !empty($_POST['radio'.$_POST['hd_question'][$i]])){
 				$arr_uid = explode('|',$_POST['radio'.$_POST['hd_question'][$i]]);
@@ -1495,6 +1825,30 @@ class Courses_Controller extends Template_Controller {
 				    )
 				);
 			}  
+		}
+		if(!empty($arrayquestion)){
+			foreach ($arrayquestion as $key => $value) {
+				$m_insert = true;
+				foreach ($_POST['hd_question'] as $key_1 => $value_1) {
+					if($value_1 == $value['questionnaires_uid']){
+						$m_insert = false;
+						break;
+					}
+				}
+				if($m_insert){
+					$this->db->insert(
+						'testing_detail',
+						array(
+							'testing_code'       => $testing_code,
+							'member_uid'         => $this->sess_cus['id'],
+							'id_course'          => $value['id_course'],
+							'questionnaires_uid' => $value['questionnaires_uid'],
+							'selected_answer'    => $value['selected_answer'],
+							'result'             => $value['result']
+					    )
+					);
+				}
+			}
 		}
 	}
 

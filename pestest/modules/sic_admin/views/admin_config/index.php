@@ -56,7 +56,7 @@
                 
             </div>
             <div style="padding-top: 15px;padding-bottom: 15px;">
-            	Opacity(from 0.x to 1):&nbsp;<input type="text" name="txt_img_opacity" id="txt_img_opacity" value="" placeholder="" style="width: 130px;text-align: right;"><br>
+            	Opacity(from 0.x to 1):&nbsp;<input type="range" name="txt_img_opacity" id="txt_img_opacity" min="0" max="1" step="0.1" onchange="chang_opacity(this.value)" value="1" style="background-color: transparent;border:none;box-shadow:none;padding:0;"><br>
                 <input id="uploadFile" type="file" name="uploadFile" value="" placeholder="" style="margin-top: 5px;">
             </div>
         </div>

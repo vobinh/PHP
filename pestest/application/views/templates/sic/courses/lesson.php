@@ -27,9 +27,11 @@
 		bottom: 6px;
 		position: absolute;
 		padding: 5px;
-    	color: #000;
     	font-weight: bold;
     	display: none;
+    	background-color: rgba(68, 68, 68, 0.44);
+    	color: #ddd;
+    	width: 100%;
 	}
 	#progress_Bar {
 		width: 100%;
@@ -75,15 +77,18 @@
 	            	<div class="col-sm-8 col-md-7">
 		            	<div class="videowrapper box_shadow">
 		            		<div id="player"></div>
-		            		<div id="video_time">Techknowledge.vn</div>
+		            		<div id="video_time">
+		            			<div id="current_time"></div>
+		            			<div id="total_time"></div>
+		            		</div>
 		            		<div id="progress_Bar"><div></div></div>
 		            	</div>
 	            		<?php 
 	            			$id_video = !empty($lesson['video_link'])?$lesson['video_link']:'';
 	            			if(!empty($id_video)){
-	            				$arr_id = explode('=', $id_video);
-	            				if(count($arr_id) > 0)
-	            					$id_video = $arr_id[1];
+	            				$url = $id_video;
+								parse_str( parse_url( $url, PHP_URL_QUERY ), $my_array_of_vars );
+								$id_video = $my_array_of_vars['v']; 
 
 	            			}
 	            			$percent_video_pass = !empty($lesson['percent_lesson_pass'])?$lesson['percent_lesson_pass']:100;
@@ -166,15 +171,15 @@
 	            	<div class="col-sm-12 col-md-12 col-lg-7">
 		            	<div class="videowrapper box_shadow">
 		            		<div id="player"></div>
-		            		<div id="video_time">Techknowledge.vn</div>
+		            		<div id="video_time">
+		            			<div id="current_time"></div>
+		            			<div id="total_time"></div>
+		            		</div>
 		            		<div id="progress_Bar"><div></div></div>
 		            	</div>
 	            		<?php 
 	            			$id_video = !empty($lesson['video_link'])?$lesson['video_link']:'';
 	            			if(!empty($id_video)){
-	            				//$arr_id = explode('=', $id_video);
-	            				//if(count($arr_id) > 1)
-	            					//$id_video = $arr_id[1];
 	            				$url = $id_video;
 								parse_str( parse_url( $url, PHP_URL_QUERY ), $my_array_of_vars );
 								$id_video = $my_array_of_vars['v']; 
@@ -288,9 +293,10 @@
 			if (event.data == YT.PlayerState.PLAYING) {
 				$('#progress_Bar').show();
 				var playerTotalTime = getDuration();
-				$('#video_time').text(secondsTimeSpanToHMS(parseInt(playerTotalTime)));
+				$('#total_time').text('Total Duration: '+secondsTimeSpanToHMS(parseInt(playerTotalTime)));
 				mytimer = setInterval(function() {
-					var playerCurrentTime    = getCurrentTime();
+					var playerCurrentTime = getCurrentTime();
+					$('#current_time').text('Playback: '+secondsTimeSpanToHMS(parseInt(playerCurrentTime)));
 					var playerTimeDifference = (playerCurrentTime / playerTotalTime) * 100;
 
 		        	progress(playerTimeDifference, $('#progress_Bar'));
